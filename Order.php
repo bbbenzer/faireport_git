@@ -12,37 +12,8 @@ $xUrl = $_REQUEST["xUrl"];
 $CusCode = $_REQUEST["CusCode"];
 
   $upeQuery = mysql_query( "UPDATE saleorder_detail SET chkOrder = 0" );
-$Sql = "SELECT
-saleorder_detail.Id,
-saleorder.DocNo,
-SUBSTR(item.Barcode,10,4) AS Barcode,
-item.NameTH,
-item.SalePrice,
-saleorder_detail.Qty,
-CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
-						FROM sale_pack_run
-						inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
-						INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-						where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
-						AND date(SO.DueDate) = date(saleorder.DueDate)
-						AND SO.Objective = 1
-						AND sale_pack_run.Cus_Code = saleorder.Cus_Code
-						AND sale_pack_run_detail.Item_Code = item.Item_Code
-						AND sale_pack_run.IsCancel = 0
-					GROUP BY sale_pack_run_detail.Item_Code
-),0), DECIMAL(4,0) )  AS  SaleQty
-FROM saleorder
-INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
-INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
-WHERE date(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.Cus_Code = '$CusCode'
-AND saleorder.IsFinish = 3
-AND saleorder.IsCancel = 0
-AND saleorder.IsNormal = 1
-AND saleorder.Objective = 1
-ORDER BY item.SalePrice ASC";
 
-				$row = 1;
+				/*$row = 1;
 				$TotalQty1 = 0;
 				$TotalQty2 = 0;
 				$meQuery = mysql_query( $Sql );
@@ -53,7 +24,89 @@ ORDER BY item.SalePrice ASC";
 					$c2 = $Result["SaleQty"];
 					if( $c1 > $c2 ) $upeQuery = mysql_query( "UPDATE saleorder_detail SET chkOrder = 1 WHERE saleorder_detail.Id = '".$Result["Id"]."'" );
 
-				}
+				}*/
+function redtr($CusCode,$Item_Code,$eDate,$sDate)
+{
+  $TotalQty1 = 0;
+  $TotalQty2 = 0;
+
+  $Sql = "SELECT Sum(saleorder_detail.Qty) AS Sum1
+	FROM saleorder
+	INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
+	WHERE date(saleorder.DueDate) = date('$eDate')
+	AND saleorder.Objective = 1
+	AND saleorder.IsFinish = 3
+  AND saleorder.IsCancel = 0
+	AND saleorder.IsNormal = 1
+	AND saleorder.Cus_Code = '$CusCode'
+	AND saleorder_detail.Item_Code = '$Item_Code'
+	GROUP BY saleorder_detail.Item_Code";
+  $meQuery = mysql_query( $Sql );
+    while ($Result = mysql_fetch_assoc($meQuery)){
+    $TotalQty1 = $Result["Sum1"];
+  }
+
+  $Sql = "SELECT Sum(sale_pack_run_detail.Qty) AS Sum2
+	FROM sale_pack_run
+	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
+	where sale_pack_run.DocDate BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+	AND sale_pack_run.Cus_Code = '$CusCode'
+	AND sale_pack_run.IsCancel = 0
+	AND sale_pack_run_detail.Item_Code = '$Item_Code'
+	GROUP BY sale_pack_run_detail.Item_Code";
+  $meQuery = mysql_query( $Sql );
+    while ($Result = mysql_fetch_assoc($meQuery)){
+    $TotalQty2 = $Result["Sum2"];
+  }
+
+  if($TotalQty1 > $TotalQty2)
+  {
+    return true;
+  }else {
+
+    return false;
+  }
+}
+
+function getOrderqty($CusCode,$Item_Code,$eDate)
+{
+  $TotalQty1 = 0;
+  $Sql = "SELECT Sum(saleorder_detail.Qty) AS Sum1
+	FROM saleorder
+	INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
+	WHERE date(saleorder.DueDate) = date('$eDate')
+	AND saleorder.Objective = 1
+	AND saleorder.IsFinish = 3
+  AND saleorder.IsCancel = 0
+	AND saleorder.IsNormal = 1
+	AND saleorder.Cus_Code = '$CusCode'
+	AND saleorder_detail.Item_Code = '$Item_Code'
+	GROUP BY saleorder_detail.Item_Code";
+  $meQuery = mysql_query( $Sql );
+    while ($Result = mysql_fetch_assoc($meQuery)){
+    $TotalQty1 = $Result["Sum1"];
+  }
+  return $TotalQty1;
+}
+
+function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
+{
+  $TotalQty2 = 0;
+  $Sql = "SELECT Sum(sale_pack_run_detail.Qty) AS Sum2
+	FROM sale_pack_run
+	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
+	where sale_pack_run.DocDate BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+	AND sale_pack_run.Cus_Code = '$CusCode'
+	AND sale_pack_run.IsCancel = 0
+	AND sale_pack_run_detail.Item_Code = '$Item_Code'
+	GROUP BY sale_pack_run_detail.Item_Code";
+  $meQuery = mysql_query( $Sql );
+    while ($Result = mysql_fetch_assoc($meQuery)){
+    $TotalQty2 = $Result["Sum2"];
+  }
+  return $TotalQty2;
+}
+
 ?>
 <!--
  *  -- ************************************************************
@@ -114,45 +167,30 @@ ORDER BY item.SalePrice ASC";
 			<?
 
 				$Sql = "SELECT
-saleorder.DocNo,
-item.Item_Code,
-SUBSTR(item.Barcode,10,4) AS Barcode,
-item.NameTH,
-item.SalePrice,
-saleorder_detail.Qty,
-CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
-						FROM sale_pack_run
-						inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
-						INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-						where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
-						AND date(SO.DueDate) = date(saleorder.DueDate)
-						AND SO.Objective = 1
-						AND sale_pack_run.Cus_Code = saleorder.Cus_Code
-						AND sale_pack_run_detail.Item_Code = item.Item_Code
-						AND sale_pack_run.IsCancel = 0
-					GROUP BY sale_pack_run_detail.Item_Code
-),0), DECIMAL(4,0) )  AS  SaleQty
-FROM saleorder
-INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
-INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
-WHERE date(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.Cus_Code = '$CusCode'
-AND saleorder.IsFinish = 3
-AND saleorder.IsCancel = 0
-AND saleorder.IsNormal = 1
-AND saleorder.Objective = 1
-ORDER BY saleorder_detail.chkOrder DESC,item.SalePrice ASC";
+        item.Item_Code,item.Barcode,item.NameTH,item.SalePrice
+        FROM saleorder
+        INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
+        INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
+        WHERE Date( saleorder.DueDate ) = '$eDate'
+        AND saleorder.Cus_Code = '$CusCode'
+
+        UNION
+
+        SELECT
+        item.Item_Code,item.Barcode,item.NameTH,item.SalePrice
+        FROM sale_pack_run
+        INNER JOIN sale_pack_run_detail ON sale_pack_run.DocNo = sale_pack_run_detail.DocNo
+        INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
+        WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+        AND sale_pack_run.Cus_Code = '$CusCode'";
 
 				$row = 1;
-				$TotalQty1 = 0;
-				$TotalQty2 = 0;
+        $TotalQty1 = 0;
+        $TotalQty2 = 0;
 				$meQuery = mysql_query( $Sql );
     			while ($Result = mysql_fetch_assoc($meQuery)){
-					$TotalQty1 += $Result["Qty"];
-					$TotalQty2 += $Result["SaleQty"];
-					$c1 = $Result["Qty"];
-					$c2 = $Result["SaleQty"];
-					if( $c1 > $c2 )
+
+					if( redtr($CusCode,$Result["Item_Code"],$eDate,$sDate) == true )
 						echo '<tr style="color:red;">';
 					else
 						echo '<tr>';
@@ -161,10 +199,12 @@ ORDER BY saleorder_detail.chkOrder DESC,item.SalePrice ASC";
 					<th><?=$Result["Barcode"]?></th>
                     <th style="cursor: pointer;" onClick='gotoUrl("item.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$CusCode?>","<?=$xUrl?>")'><?=$Result["NameTH"]?></th>
                     <th><?=$Result["SalePrice"]?></th>
-                    <th><?=$Result["Qty"]?></th>
-                    <th><?=$Result["SaleQty"]?></th>
+                    <th><?=getOrderqty($CusCode,$Result["Item_Code"],$eDate)?></th>
+                    <th><?=getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate)?></th>
 				</tr>
 			<?
+        $TotalQty1 += getOrderqty($CusCode,$Result["Item_Code"],$eDate);
+        $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
 				$row++;
 				}
 			?>
