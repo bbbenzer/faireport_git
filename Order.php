@@ -12,7 +12,35 @@ $xUrl = $_REQUEST["xUrl"];
 $CusCode = $_REQUEST["CusCode"];
 
   $upeQuery = mysql_query( "UPDATE saleorder_detail SET chkOrder = 0" );
-$Sql = "";
+$Sql = "SELECT
+saleorder_detail.Id,
+saleorder.DocNo,
+SUBSTR(item.Barcode,10,4) AS Barcode,
+item.NameTH,
+item.SalePrice,
+saleorder_detail.Qty,
+CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
+						FROM sale_pack_run
+						inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
+						INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
+						where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+						AND date(SO.DueDate) = date(saleorder.DueDate)
+						AND SO.Objective = 1
+						AND sale_pack_run.Cus_Code = saleorder.Cus_Code
+						AND sale_pack_run_detail.Item_Code = item.Item_Code
+						AND sale_pack_run.IsCancel = 0
+					GROUP BY sale_pack_run_detail.Item_Code
+),0), DECIMAL(4,0) )  AS  SaleQty
+FROM saleorder
+INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
+INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
+WHERE date(saleorder.DueDate) = DATE('$eDate')
+AND saleorder.Cus_Code = '$CusCode'
+AND saleorder.IsFinish = 3
+AND saleorder.IsCancel = 0
+AND saleorder.IsNormal = 1
+AND saleorder.Objective = 1
+ORDER BY item.SalePrice ASC";
 
 				$row = 1;
 				$TotalQty1 = 0;
