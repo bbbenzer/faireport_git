@@ -12,7 +12,7 @@
 
 $DB_SERVER = "localhost";// db server
 $DB_USER = "root";// db user
-$DB_PASSWORD = "A$192dijd";// db password (mention your db password here)
+$DB_PASSWORD = "";// db password (mention your db password here)
 $DB_DATABASE = "fai_fai";// database name
 
 $meConnect = mysql_connect($DB_SERVER, $DB_USER, $DB_PASSWORD) or die("Error conncetion mysql...");
