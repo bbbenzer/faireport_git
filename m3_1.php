@@ -111,7 +111,7 @@ onClick='gotoFilter("m3_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl?>
 				<tr class="ui-bar-d">
                 	 <th width="50px" data-priority="2">ลำดับ</th>
                      <th width="150px"data-priority="2">ห้องผลิต</th>
-					 <th width="80px"data-priority="2">บาร์โค้ด</th>
+					 <th width="150px"data-priority="2">บาร์โค้ด</th>
 					 <th width="200px">ชื่อสินค้า</th>
 					 <th width="50px">ราคา</th>
                      <th width="80px" data-priority="2">แบบ</th>
@@ -126,65 +126,102 @@ onClick='gotoFilter("m3_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl?>
 			<tbody style='height:300px;display:block;overflow:scroll'>
 
 			<?
-				$Sql = "SELECT
-buffer_fac_order.xDt,
-buffer_fac_order.id,
-buffer_fac_order.Item_Code,
-buffer_fac_order.Barcode,
-buffer_fac_order.NameTH,
-buffer_fac_order.IsForm,
-buffer_fac_order.SalePrice,
-buffer_fac_order.SoQty,
-buffer_fac_order.CrQty,
-buffer_fac_order.FacQty,
-buffer_fac_order.RvQty,
-buffer_fac_order.SaQty,
-buffer_fac_order.StQty,
-roomtype.roomname
-FROM buffer_fac_order
-LEFT JOIN roomtype ON buffer_fac_order.roomtypeID = roomtype.roomtypeID
-WHERE buffer_fac_order.Objective = 1
-AND buffer_fac_order.Item_Code LIKE '%$xItc%'
-AND DATE(xDt) = DATE('$eDate') ";
+			$Sql = "SELECT roomtype.roomname,
+			item.Item_Code,
+			item.Barcode,
+			item.NameTH,
+			item.SalePrice,
+			CASE item.IsForm
+			WHEN 0 THEN 'สูตร'
+			WHEN 1 THEN 'ชิ้น'
+			WHEN 2 THEN 'ของกรอบ'
+			WHEN 3 THEN 'special'
+			WHEN 4 THEN 'ซื้อมาขายไป'
+			END AS IsForm,
+
+			IFNULL((SELECT IFNULL(SUM(saleorder_detail.Qty),0)
+			FROM saleorder_detail
+			INNER JOIN saleorder ON saleorder.DocNo = saleorder_detail.DocNo
+			WHERE saleorder_detail.Item_Code = '$xItc'
+			AND DATE(saleorder.DueDate) = DATE('$eDate')),0) AS orderqty,
+
+			IFNULL((SELECT IFNULL(SUM(itemstock.Qty),0)
+			FROM itemstock
+			WHERE itemstock.ItemCode = '$xItc'
+			AND DATE(itemstock.DueDate) = DATE('$eDate')),0) AS bringqty,
+
+			IFNULL((SELECT facorderdetail.SaleOrderQty
+			FROM facorderdetail
+			INNER JOIN facorder ON facorder.DocNo = facorderdetail.DocNo
+			WHERE facorderdetail.Item_Code = '$xItc'
+			AND DATE(facorder.DueDate) = DATE('$eDate')),0) AS comqty,
+
+			IFNULL((SELECT
+			((SELECT IFNULL(SUM(wh_stock_receive_sub.Qty),0)
+			FROM wh_stock_receive
+			INNER join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo
+			INNER JOIN item ON wh_stock_receive_sub.Item_Code = item.Item_Code
+			WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+			AND wh_stock_receive_sub.Item_Code = '$xItc'
+			AND wh_stock_receive.Branch_Code = 2)
+			-
+			(SELECT IFNULL(SUM(wh_stock_transmit_sub.Qty),0)
+			FROM wh_stock_transmit
+			INNER join wh_stock_transmit_sub on wh_stock_transmit_sub.DocNo = wh_stock_transmit.DocNo
+			INNER JOIN item ON wh_stock_transmit_sub.Item_Code = item.Item_Code
+			WHERE wh_stock_transmit.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+			AND wh_stock_transmit_sub.Item_Code = '$xItc'
+			AND wh_stock_transmit.Branch_Code = 2)
+			)
+			),0) AS getqty,
+
+			IFNULL((SELECT IFNULL(SUM(sale_pack_run_detail.Qty),0)
+			FROM sale_pack_run_detail
+			INNER JOIN sale_pack_run ON sale_pack_run_detail.DocNo = sale_pack_run.DocNo
+			WHERE sale_pack_run_detail.Item_Code = '$xItc'
+			AND DATE(sale_pack_run.DocDate) = DATE('$eDate')),0) AS saleqty
+			FROM roomtype
+			INNER JOIN item ON roomtype.roomtypeID = item.roomtypeID
+			WHERE item.Item_Code = '$xItc'";
 
 if($IS==1)
-  $Sql .= "AND buffer_fac_order.IsForm = 'ชิ้น' ";
+$Sql .= "AND item.IsForm = 1 ";
 else if($IS==2)
-  $Sql .= "AND buffer_fac_order.IsForm = 'ของกรอบ' ";
+$Sql .= "AND item.IsForm = 2 ";
 else if($IS==3)
-  $Sql .= "AND buffer_fac_order.IsForm = 'สูตร' ";
+$Sql .= "AND item.IsForm = 0 ";
 else if($IS==4)
-  $Sql .= "AND buffer_fac_order.IsForm = 'Special' ";
+$Sql .= "AND item.IsForm = 3 ";
 
 if($Fl==2)
-	$Sql .= "ORDER BY  roomtype.roomname ASC,buffer_fac_order.SalePrice ASC" ;
+$Sql .= "ORDER BY  roomtype.roomname ASC,item.SalePrice ASC" ;
 else
-	$Sql .= "ORDER BY  buffer_fac_order.SalePrice ASC";
+$Sql .= "ORDER BY  item.SalePrice ASC";
 
-				$row = 1;
-				$meQuery = mysql_query( $Sql );
-    			while ($Result = mysql_fetch_assoc($meQuery)){
-			?>
-				<tr>
-                	<th width="50px"><?=$row?></th>
-                    <th width="150px"><?=$Result["roomname"]?></th>
-					<th width="80px"><?=$Result["Barcode"]?></th>
-					<td width="200px"><?=$Result["NameTH"]?></td>
-					<td width="50px"><?=$Result["SalePrice"]?></td>
-                    <td width="80px"><?=$Result["IsForm"]?></td>
-					<td width="50px" style="cursor: pointer;" onClick='gotoUrl("mCustomer.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl?>","<?=$CusCode?>","<?=$xUrl2?>","<?=$flag?>")'><?=$Result["SoQty"]?></td>
-                    <td width="50px"><?=$Result["CrQty"]?></td>
-					<td width="50px" style="cursor: pointer;" onClick='gotoUrl("Factory.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl?>","<?=$CusCode?>","<?=$xUrl2?>","<?=$flag?>")'><?=$Result["FacQty"]?></th>
-                    <td  width="50px" style="cursor: pointer;" onClick='gotoUrl("Receive.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl?>","<?=$CusCode?>","<?=$xUrl2?>","<?=$flag?>")'><?=$Result["RvQty"]?></th>
-					<td width="50px" style="cursor: pointer;" onClick='gotoUrl("Sale.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl?>","<?=$CusCode?>","<?=$xUrl2?>","<?=$flag?>")'><?=$Result["SaQty"]?></th>
-				</tr>
-			<?
-				$row++;
+			$row = 1;
+			$meQuery = mysql_query( $Sql );
+				while ($Result = mysql_fetch_assoc($meQuery)){
+		?>
+			<tr>
+								<th width="50px"><?=$row?></th>
+									<th width="150px"><?=$Result["roomname"]?></th>
+				<th width="150px"><?=$Result["Barcode"]?></th>
+				<td width="200px"><?=$Result["NameTH"]?></td>
+				<td width="50px"><?=$Result["SalePrice"]?></td>
+									<td width="80px"><?=$Result["IsForm"]?></td>
+				<td width="50px" style="cursor: pointer;" onClick='gotoUrl("mCustomer.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl2?>","<?=$CusCode?>","Order.php","<?=$flag?>")'><?=$Result["orderqty"]?></td>
+									<td width="50px"><?=$Result["bringqty"]?></td>
+				<td width="50px" style="cursor: pointer;" onClick='gotoUrl("Factory.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl2?>","<?=$CusCode?>","Order.php","<?=$flag?>")'><?=$Result["comqty"]?></th>
+									<td  width="50px" style="cursor: pointer;" onClick='gotoUrl("Receive.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl2?>","<?=$CusCode?>","Order.php","<?=$flag?>")'><? echo (int)$Result["getqty"]?></th>
+				<td width="50px" style="cursor: pointer;" onClick='gotoUrl("Sale.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$xUrl2?>","<?=$CusCode?>","Order.php","<?=$flag?>")'><?=$Result["saleqty"]?></th>
+			</tr>
+		<?
+			$row++;
 
-				}
-			?>
+			}
+		?>
 
-			</tbody>
+		</tbody>
 		</table>
 
 </div>
