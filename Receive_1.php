@@ -50,17 +50,26 @@ $flag = $_REQUEST["flag"];
 		<div data-role="header">
 			<?php if($xUrl=="fai_menu.php" && $flag=="daily")
 			{ ?>
-				<a href="#" onClick='gotoMenu("m3_1.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+				<a href="#" onClick='gotoMenu("m3_1_1.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+			<?php } elseif($flag=="over1"){ ?>
+				<a href="#" onClick='gotoMenu("m5_1.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+			<?php } elseif($flag=="over2"){ ?>
+				<a href="#" onClick='gotoMenu("m5_2.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+			<?php } elseif($flag=="stock1"){ ?>
+				<a href="#" onClick='gotoMenu("m7_2.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+			<?php } elseif($flag=="stock2"){ ?>
+				<a href="#" onClick='gotoMenu("m7_3.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
 			<?php }else{
-				?> <a href="#" onClick='gotoMenu("m3_1.php","<?=$eDate?>","<?=$xItc?>","<?=$xUrl2?>","<?=$CusCode?>","<?=$xUrl?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+				?> <a href="#" onClick='gotoMenu("m3_1_1.php","<?=$eDate?>","<?=$xItc?>","<?=$xUrl2?>","<?=$CusCode?>","<?=$xUrl?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
 			<?php } ?>
             		<h1>วันที่รับ : <?=$eDate?></h1>
 			<a href="#" onClick='gotoMenu("fai_menu.php","<?=$eDate?>");' class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Exit</a>
 		</div>
 	</div>
 
+
 	<div data-role="content">
-    <h3>ยอดสั่งลูกค้า</h3>
+<h3>บันทึกรับ</h3>
 		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
 			<thead>
 				<tr class="ui-bar-d">
@@ -76,53 +85,36 @@ $flag = $_REQUEST["flag"];
 			<tbody>
 
 			<?
-$Sql = "SELECT
-item.Item_Code,
-item.Barcode,
-item.NameTH,
-item.SalePrice,
-saleorder_detail.Qty,
-saleorder.CurrentTime
-FROM saleorder
-INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
-INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
-WHERE DATE(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.Objective = 1
-AND saleorder.IsFinish = 3
-AND saleorder.IsCancel = 0
-AND saleorder.IsNormal = 1
-AND saleorder_detail.Item_Code = '$xItc'";
-
+$Sql = "SELECT item.Item_Code, item.Barcode, item.NameTH, item.SalePrice, wh_stock_receive_sub.Qty,
+wh_stock_receive_sub.Modify_Date
+FROM wh_stock_receive
+INNER join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo
+INNER JOIN item ON wh_stock_receive_sub.Item_Code = item.Item_Code
+WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+AND wh_stock_receive_sub.Item_Code = '$xItc'
+AND wh_stock_receive.Branch_Code = 2";
 				$row = 1;
-				$TotalQty = 0;
 				$meQuery = mysql_query( $Sql );
     			while ($Result = mysql_fetch_assoc($meQuery)){
-				$TotalQty += $Result["Qty"];
 			?>
             	<tr>
             		<td><?=$row?></td>
-					<th><?=$Result["Barcode"]?></th>
-                    <th><?=$Result["NameTH"]?></th>
-                    <th><?=$Result["SalePrice"]?></th>
-                    <th><?=number_format($Result["Qty"], 0, '.', '');?></th>
-                    <th><?=$Result["CurrentTime"]?></th>
+					<td><?=$Result["Barcode"]?></td>
+                    <td><?=$Result["NameTH"]?></td>
+                    <td><?=$Result["SalePrice"]?></td>
+                    <td><?=number_format($Result["Qty"], 0, '.', '');?></td>
+                    <td><?=$Result["Modify_Date"]?></td>
 				</tr>
 			<?
 				$row++;
 				}
 			?>
-            	<tr>
-            		<td  colspan="4" >รวมทั้งสิ้น</td>
-                    <th><?=number_format($TotalQty, 0, '.', '');?></th>
-                    <th></th>
-				</tr>
-
 			</tbody>
 		</table>
 
-        <h3>ยอดสินค้าในสต๊อก</h3>
+<h3>บันทึกเบิก</h3>
 
-      		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
 			<thead>
 				<tr class="ui-bar-d">
                 	 <th data-priority="2">ลำดับ</th>
@@ -137,23 +129,17 @@ AND saleorder_detail.Item_Code = '$xItc'";
 			<tbody>
 
 			<?
-$Sql = "SELECT
-item.Item_Code,
-item.Barcode,
-item.NameTH,
-item.SalePrice,
-itemstock.Qty,
-itemstock.DueDate
-FROM itemstock
-INNER JOIN item ON itemstock.ItemCode = item.Item_Code
-WHERE DATE(itemstock.DueDate) = DATE('$eDate')
-AND itemstock.ItemCode = '$xItc'";
-
+$Sql = "SELECT item.Item_Code, item.Barcode, item.NameTH, item.SalePrice, wh_stock_transmit_sub.Qty,
+wh_stock_transmit_sub.Modify_Date
+FROM wh_stock_transmit
+INNER join wh_stock_transmit_sub on wh_stock_transmit_sub.DocNo = wh_stock_transmit.DocNo
+INNER JOIN item ON wh_stock_transmit_sub.Item_Code = item.Item_Code
+WHERE wh_stock_transmit.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+AND wh_stock_transmit_sub.Item_Code = '$xItc'
+AND wh_stock_transmit.Branch_Code = 2";
 				$row = 1;
-				$TotalQty = 0;
 				$meQuery = mysql_query( $Sql );
     			while ($Result = mysql_fetch_assoc($meQuery)){
-				$TotalQty += $Result["Qty"];
 			?>
             	<tr>
             		<td><?=$row?></td>
@@ -161,19 +147,15 @@ AND itemstock.ItemCode = '$xItc'";
                     <th><?=$Result["NameTH"]?></th>
                     <th><?=$Result["SalePrice"]?></th>
                     <th><?=number_format($Result["Qty"], 0, '.', '');?></th>
-                    <th><?=$Result["DueDate"]?></th>
+                    <th><?=$Result["Modify_Date"]?></th>
 				</tr>
 			<?
 				$row++;
 				}
 			?>
-                <tr>
-            		<td  colspan="4" >รวมทั้งสิ้น</td>
-                    <th><?=number_format($TotalQty, 0, '.', '');?></th>
-                    <th></th>
-				</tr>
 			</tbody>
 		</table>
+
 </div>
 
 <div data-role="footer">
