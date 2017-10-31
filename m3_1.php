@@ -150,7 +150,7 @@ onClick='gotoFilter("m3_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl?>
 			WHERE itemstock.ItemCode = '$xItc'
 			AND DATE(itemstock.DueDate) = DATE('$eDate')),0) AS bringqty,
 
-			IFNULL((SELECT facorderdetail.SaleOrderQty
+			IFNULL((SELECT IFNULL(SUM(facorderdetail.SaleOrderQty),0)
 			FROM facorderdetail
 			INNER JOIN facorder ON facorder.DocNo = facorderdetail.DocNo
 			WHERE facorderdetail.Item_Code = '$xItc'
