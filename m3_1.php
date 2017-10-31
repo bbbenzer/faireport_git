@@ -20,6 +20,7 @@ if(isset($_REQUEST["Fl"]))
 	$Fl = 1;
 }
 
+
 ?>
 <!--
  *  -- ************************************************************
@@ -41,7 +42,7 @@ if(isset($_REQUEST["Fl"]))
 		<script src="js/jquery.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="application/javascript">
-			function gotoUrl(xLink,xItc,DueDate,xUrl,CusCode,xUrl2,flag) {
+			function gotoUrl(xLink,xItc,DueDate,xUrl2,CusCode,xUrl,flag) {
 				//alert("mCustomer.php?xItc="+xItc+"&DueDate="+DueDate)
 				window.location.href = xLink+"?xItc="+xItc+"&xDate="+DueDate+"&xUrl="+xUrl+"&xUrl2="+xUrl2+"&CusCode="+CusCode+"&flag="+flag;
 			}

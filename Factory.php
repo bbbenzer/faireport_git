@@ -13,6 +13,7 @@ $xUrl = $_REQUEST["xUrl"];
 $xUrl2 = $_REQUEST["xUrl2"];
 $xItc = $_REQUEST["xItc"];
 $flag = $_REQUEST["flag"];
+
 ?>
 <!--
  *  -- ************************************************************
@@ -52,7 +53,7 @@ $flag = $_REQUEST["flag"];
 			{ ?>
 				<a href="#" onClick='gotoMenu("m3_1.php","<?=$eDate?>","","","","<?=$xUrl?>","<?=$flag?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
 			<?php }else{
-				?> <a href="#" onClick='gotoMenu("m3_1.php","<?=$eDate?>","<?=$xItc?>","<?=$xUrl2?>","<?=$CusCode?>","<?=$xUrl?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+				?> <a href="#" onClick='gotoMenu("m3_1.php","<?=$eDate?>","<?=$xItc?>","<?=$xUrl2?>","<?=$CusCode?>","<?=$xUrl?>","");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
 			<?php } ?>
             		<h1>วันที่รับ : <?=$eDate?></h1>
 			<a href="#" onClick='gotoMenu("fai_menu.php","<?=$eDate?>");' class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Exit</a>
