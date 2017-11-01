@@ -144,7 +144,11 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM saleorder_detail
 			INNER JOIN saleorder ON saleorder.DocNo = saleorder_detail.DocNo
 			WHERE saleorder_detail.Item_Code = '$xItc'
-			AND DATE(saleorder.DueDate) = DATE('$eDate')),0) AS orderqty,
+			AND DATE(saleorder.DueDate) = DATE('$eDate')
+			AND saleorder.Objective = 1
+			AND saleorder.IsFinish = 3
+			AND saleorder.IsCancel = 0
+			AND saleorder.IsNormal = 1),0) AS orderqty,
 
 			IFNULL((SELECT IFNULL(SUM(itemstock.Qty),0)
 			FROM itemstock
@@ -155,7 +159,8 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM facorderdetail
 			INNER JOIN facorder ON facorder.DocNo = facorderdetail.DocNo
 			WHERE facorderdetail.Item_Code = '$xItc'
-			AND DATE(facorder.DueDate) = DATE('$eDate')),0) AS comqty,
+			AND DATE(facorder.DueDate) = DATE('$eDate')
+			AND facorderdetail.Objective = 1),0) AS comqty,
 
 			IFNULL((SELECT
 			((SELECT IFNULL(SUM(wh_stock_receive_sub.Qty),0)
@@ -180,7 +185,9 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM sale_pack_run_detail
 			INNER JOIN sale_pack_run ON sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 			WHERE sale_pack_run_detail.Item_Code = '$xItc'
-			AND DATE(sale_pack_run.DocDate) = DATE('$eDate')),0) AS saleqty
+			AND DATE(sale_pack_run.DocDate) = DATE('$eDate')
+			AND sale_pack_run.IsCancel = 0
+			AND sale_pack_run.Objective = 0),0) AS saleqty
 			FROM roomtype
 			INNER JOIN item ON roomtype.roomtypeID = item.roomtypeID
 			WHERE item.Item_Code = '$xItc'";
