@@ -52,7 +52,7 @@ $lDate =  date('Y-m-d', $date);
 	<body>
  	<div data-demo-html="true">
 		<div data-role="header">
-			<a href="#" onClick='gotoMenu("fai_menu.php","<?=$eDate?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
+			<a href="#" onClick='gotoMenu("fai_suborder.php","<?=$eDate?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
             		<h1>รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</h1>
 			<a href="#" onClick='gotoNewUrl("precrisp_print.php","<?=$eDate?>");' class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-grid">Print</a>
 		</div>
