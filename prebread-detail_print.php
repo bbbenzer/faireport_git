@@ -55,11 +55,14 @@ table, td, th {
     INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
     INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
     INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
+    INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
     WHERE item.NameTH = '$NameTH'
     AND saleorder.DueDate LIKE '$DueDate%'
     AND item.StatusRpt = 3
     AND saleorder.IsCancel = 0
-    AND saleorder.IsFinish = 1 ";
+    AND saleorder.IsFinish = 1
+    AND wh_inventory.Branch_Code = 2
+    GROUP BY customer.FName";
 
     $row = 1;
     $meQuery = mysql_query( $Sql );
