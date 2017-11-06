@@ -76,7 +76,7 @@ $totalqty = 0;
 
 			<?
 				$Sql = "SELECT customer.FName,
-        SUM(saleorder_detail.Qty) AS Qty
+        saleorder_detail.Qty AS Qty
         FROM saleorder
         INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
         INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
@@ -88,7 +88,7 @@ $totalqty = 0;
         AND saleorder.IsCancel = 0
         AND saleorder.IsFinish = 1
 				AND wh_inventory.Branch_Code = 2
-				GROUP BY customer.FName";
+				GROUP BY customer.FName,saleorder.DocNo";
 						//echo $Sql;
 				$row = 1;
 				$meQuery = mysql_query( $Sql );

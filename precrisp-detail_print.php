@@ -62,7 +62,7 @@ table, td, th {
     AND item.StatusRpt = 2
     AND saleorder.IsCancel = 0
     AND saleorder.IsFinish = 1
-    GROUP BY customer.FName ";
+    GROUP BY customer.FName,saleorder.DocNo";
 
     $row = 1;
     $meQuery = mysql_query( $Sql );
