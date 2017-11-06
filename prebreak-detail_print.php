@@ -48,7 +48,8 @@ table, td, th {
   <tbody>
 
     <?
-      $Sql = "SELECT item.NameTH,
+      $Sql = "SELECT item.Item_Code,
+      item.NameTH,
       item.SalePrice,
       saleorder.DueDate,
       SUM(saleorder_detail.Qty) AS order_qty
@@ -59,8 +60,8 @@ table, td, th {
       AND saleorder.IsCancel = 0
       AND saleorder.IsFinish = 1
       AND saleorder.DueDate LIKE '$DueDate%'
-      GROUP BY item.NameTH
-      ORDER BY item.NameTH,saleorder.DueDate ASC";
+      GROUP BY item.Item_Code
+      ORDER BY item.NameTH,item.SalePrice ASC";
           //echo $Sql;
       $row = 1;
       $meQuery = mysql_query( $Sql );

@@ -9,6 +9,7 @@ $sDate =  date('Y-m-d', $date);
 $DueDate = $_REQUEST["DueDate"];
 $xUrl = $_REQUEST["xUrl"];
 $NameTH = $_REQUEST["NameTH"];
+$Item_Code = $_REQUEST["Item_Code"];
 $stock = $_REQUEST["stock"];
 $totalqty = 0;
 ?>
@@ -32,8 +33,8 @@ $totalqty = 0;
 		<script src="js/jquery.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="application/javascript">
-		function gotoNewUrl(xLink,DueDate,eDate,NameTH) {
-			window.open( xLink+"?xDate="+eDate+"&NameTH="+NameTH+"&DueDate="+DueDate );
+		function gotoNewUrl(xLink,DueDate,eDate,NameTH,Item_Code) {
+			window.open( xLink+"?xDate="+eDate+"&NameTH="+NameTH+"&DueDate="+DueDate+"&Item_Code="+Item_Code );
 		}
 
 			function gotoUrl(xLink,DueDate,FN) {
@@ -57,7 +58,7 @@ $totalqty = 0;
 		<div data-role="header">
 			<a href="#" onClick='gotoMenu("<?=$xUrl?>","<?=$eDate?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
             		<h1>รายละเอียดขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า)</h1>
-			<a href="#" onClick="gotoNewUrl('prebread-detail_print.php','<?=$DueDate?>','<?=$eDate?>','<?=$NameTH?>');" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-grid">Print</a>
+			<a href="#" onClick="gotoNewUrl('prebread-detail_print.php','<?=$DueDate?>','<?=$eDate?>','<?=$NameTH?>','<?=$Item_Code?>');" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-grid">Print</a>
 		</div>
 	</div>
 
@@ -81,7 +82,7 @@ $totalqty = 0;
         INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
         INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
 				INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
-        WHERE item.NameTH = '$NameTH'
+        WHERE item.Item_Code = '$Item_Code'
         AND saleorder.DueDate LIKE '$DueDate%'
         AND item.StatusRpt = 3
         AND saleorder.IsCancel = 0

@@ -38,8 +38,8 @@ $lDate =  date('Y-m-d', $date);
 				location.href = xLink+"?sDate="+sDate+"&lDate="+lDate;
 			}
 
-			function gotoUrlDetail(DueDate,NameTH,eDate) {
-				location.href = "precrisp_detail.php"+"?xDate="+eDate+"&DueDate="+DueDate+"&xUrl=precrisp.php"+"&NameTH="+NameTH;
+			function gotoUrlDetail(DueDate,NameTH,eDate,Item_Code) {
+				location.href = "precrisp_detail.php"+"?xDate="+eDate+"&DueDate="+DueDate+"&xUrl=precrisp.php"+"&NameTH="+NameTH+"&Item_Code="+Item_Code;
 			}
 
 			function gotoMenu(xLink,DueDate) {
@@ -82,7 +82,8 @@ $lDate =  date('Y-m-d', $date);
 			<tbody style='height:300px;display:block;overflow:scroll'>
 
 			<?
-				$Sql = "SELECT item.NameTH,
+				$Sql = "SELECT item.Item_Code,
+				item.NameTH,
         item.SalePrice,
         wh_inventory.Qty,
         saleorder.DueDate,
@@ -97,8 +98,8 @@ $lDate =  date('Y-m-d', $date);
         AND saleorder.IsFinish = 1
         AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
 				AND wh_inventory.Branch_Code = 2
-        GROUP BY item.NameTH
-        ORDER BY item.NameTH ASC";
+				GROUP BY item.Item_Code
+        ORDER BY item.NameTH,item.SalePrice ASC";
 						//echo $Sql;
 				$row = 1;
 				$meQuery = mysql_query( $Sql );
@@ -122,7 +123,8 @@ $lDate =  date('Y-m-d', $date);
                   case '6': $datecheck = date('Y-m-d', strtotime("+6 day", strtotime($eDate))); break;
                   case '7': $datecheck = date('Y-m-d', strtotime("+7 day", strtotime($eDate))); break;
                 }
-                $subsql = "SELECT item.NameTH,
+                $subsql = "SELECT item.Item_Code,
+								item.NameTH,
                 item.SalePrice,
                 saleorder_detail.Qty,
                 saleorder.DueDate,
@@ -137,11 +139,11 @@ $lDate =  date('Y-m-d', $date);
                 AND saleorder.IsFinish = 1
                 AND saleorder.DueDate LIKE '$datecheck%'
 								AND wh_inventory.Branch_Code = 2
-								GROUP BY saleorder.Docno,item.NameTH
+								GROUP BY saleorder.Docno,item.Item_Code
 								ORDER BY item.NameTH,saleorder.DueDate ASC";
         				$meQuery2 = mysql_query($subsql);
             			while ($Result2 = mysql_fetch_assoc($meQuery2)){
-                    if($Result["NameTH"]==$Result2["NameTH"])
+                    if($Result["Item_Code"]==$Result2["Item_Code"])
                     {
                       $flag += $Result2["Qty"];
                     }
@@ -150,7 +152,7 @@ $lDate =  date('Y-m-d', $date);
                 {
                   echo '<td width="50px">0</td>';
                 }else {
-                ?>  <td width="50px"><a style="text-decoration:none; color:#28d93c" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>')"><?=$flag?></a></td>
+                ?>  <td width="50px"><a style="text-decoration:none; color:#28d93c" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>','<?=$Result["Item_Code"]?>')"><?=$flag?></a></td>
                 <?}
             }
            ?>

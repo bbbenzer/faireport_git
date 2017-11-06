@@ -8,6 +8,7 @@ $sDate =  date('Y-m-d', $date);
 
 $DueDate = $_REQUEST["DueDate"];
 $xUrl = $_REQUEST["xUrl"];
+$Item_Code = $_REQUEST["Item_Code"];
 $NameTH = $_REQUEST["NameTH"];
 $stock = $_REQUEST["stock"];
 $totalqty = 0;
@@ -56,7 +57,7 @@ table, td, th {
     INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
     INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
     INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
-    WHERE item.NameTH = '$NameTH'
+    WHERE item.Item_Code = '$Item_Code'
     AND saleorder.DueDate LIKE '$DueDate%'
     AND item.StatusRpt = 3
     AND saleorder.IsCancel = 0

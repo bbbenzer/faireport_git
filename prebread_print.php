@@ -57,7 +57,8 @@ table, td, th {
   <tbody>
 
   <?
-    $Sql = "SELECT item.NameTH,
+    $Sql = "SELECT item.Item_Code,
+    item.NameTH,
     item.SalePrice,
     wh_inventory.Qty,
     saleorder.DueDate,
@@ -72,8 +73,8 @@ table, td, th {
     AND saleorder.IsFinish = 1
     AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
     AND wh_inventory.Branch_Code = 2
-    GROUP BY item.NameTH
-    ORDER BY item.NameTH ASC";
+    GROUP BY item.Item_Code
+    ORDER BY item.NameTH,item.SalePrice ASC";
 
     $row = 1;
     $meQuery = mysql_query( $Sql );
@@ -95,7 +96,8 @@ table, td, th {
               case '4': $datecheck = date('Y-m-d', strtotime("+4 day", strtotime($eDate))); break;
               case '5': $datecheck = date('Y-m-d', strtotime("+5 day", strtotime($eDate))); break;
             }
-            $subsql = "SELECT item.NameTH,
+            $subsql = "SELECT item.Item_Code,
+            item.NameTH,
             item.SalePrice,
             saleorder_detail.Qty,
             saleorder.DueDate,
@@ -110,11 +112,11 @@ table, td, th {
             AND saleorder.IsFinish = 1
             AND saleorder.DueDate LIKE '$datecheck%'
             AND wh_inventory.Branch_Code = 2
-            GROUP BY saleorder.Docno,item.NameTH
+            GROUP BY saleorder.Docno,item.Item_Code
             ORDER BY item.NameTH,saleorder.DueDate ASC";
             $meQuery2 = mysql_query($subsql);
               while ($Result2 = mysql_fetch_assoc($meQuery2)){
-                if($Result["NameTH"]==$Result2["NameTH"])
+                if($Result["Item_Code"]==$Result2["Item_Code"])
                 {
                   $flag += $Result2["Qty"];
                 }
