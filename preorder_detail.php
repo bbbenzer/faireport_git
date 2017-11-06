@@ -100,7 +100,7 @@ if($Objective=='ทั่วไป'){
         INNER JOIN saleorder_detail ON saleorder_detail.Item_Code = item.Item_Code
         INNER JOIN saleorder ON saleorder.DocNo = saleorder_detail.DocNo
         WHERE saleorder.Objective = '$obj'
-        AND date(saleorder.DueDate) = date('$DueDate')
+        AND DATE(saleorder.DueDate) = DATE('$DueDate')
 				AND saleorder.DocNo = '$DocNo'
         AND saleorder.Cus_Code = '$CusCode'
 				AND saleorder.IsCancel = 0

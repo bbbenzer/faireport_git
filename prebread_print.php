@@ -112,7 +112,7 @@ table, td, th {
             AND saleorder.IsFinish = 1
             AND saleorder.DueDate LIKE '$datecheck%'
             AND wh_inventory.Branch_Code = 2
-            GROUP BY saleorder.Docno,item.Item_Code
+            GROUP BY saleorder.DocNo,item.Item_Code
             ORDER BY item.NameTH,saleorder.DueDate ASC";
             $meQuery2 = mysql_query($subsql);
               while ($Result2 = mysql_fetch_assoc($meQuery2)){

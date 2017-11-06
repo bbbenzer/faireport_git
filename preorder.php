@@ -93,7 +93,7 @@ $lDate =  date('Y-m-d', $date);
         LEFT JOIN customer ON customer.Cus_Code = S.Cus_Code
         WHERE S.IsCancel = 0
         AND S.IsFinish = 1
-				AND date(S.DueDate) BETWEEN date('$sDate') AND date('$lDate')
+				AND DATE(S.DueDate) BETWEEN DATE('$sDate') AND DATE('$lDate')
 				GROUP BY S.DocNo
 				ORDER BY S.DueDate,customer.FName";
 				$row = 1;

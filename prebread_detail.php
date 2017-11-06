@@ -76,7 +76,7 @@ $totalqty = 0;
 
 			<?
 				$Sql = "SELECT customer.FName,
-        saleorder_detail.Qty
+        SUM(saleorder_detail.Qty) AS Qty
         FROM saleorder
         INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
         INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo

@@ -135,7 +135,7 @@ $lDate =  date('Y-m-d', $date);
                 AND saleorder.IsFinish = 1
                 AND saleorder.DueDate LIKE '$datecheck%'
 								AND wh_inventory.Branch_Code = 2
-								GROUP BY saleorder.Docno,item.Item_Code
+								GROUP BY saleorder.DocNo,item.Item_Code
 								ORDER BY item.NameTH,saleorder.DueDate ASC";
         				$meQuery2 = mysql_query($subsql);
             			while ($Result2 = mysql_fetch_assoc($meQuery2)){
@@ -148,6 +148,7 @@ $lDate =  date('Y-m-d', $date);
                 {
                   echo '<td width="50px">0</td>';
                 }else {
+
                 ?>  <td width="50px"><a style="text-decoration:none; color:#28d93c" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>','<?=$Result["Item_Code"]?>')"><?=$flag?></a></td>
                 <?}
             }

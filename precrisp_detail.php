@@ -76,18 +76,19 @@ $totalqty = 0;
 
 			<?
 				$Sql = "SELECT customer.FName,
-        saleorder_detail.Qty
+        SUM(saleorder_detail.Qty) AS Qty
         FROM saleorder
         INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
         INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
         INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
 				INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
-				WHERE item.Item_Code = '$Item_Code'
+        WHERE item.Item_Code = '$Item_Code'
         AND saleorder.DueDate LIKE '$DueDate%'
         AND item.StatusRpt = 2
         AND saleorder.IsCancel = 0
         AND saleorder.IsFinish = 1
-				GROUP BY customer.FName ";
+				AND wh_inventory.Branch_Code = 2
+				GROUP BY customer.FName";
 						//echo $Sql;
 				$row = 1;
 				$meQuery = mysql_query( $Sql );
