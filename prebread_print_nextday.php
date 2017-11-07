@@ -43,24 +43,16 @@ table, td, th {
   <thead>
     <tr>
        <th  style="vertical-align: middle;" width="10px" rowspan="3" data-priority="2">ลำดับ</th>
-       <th  style="vertical-align: middle;" width="170px" rowspan="3">ชื่อสินค้า</th>
-       <th  style="vertical-align: middle;" width="50px" rowspan="3">ราคา</th>
-       <th  style="vertical-align: middle;" width="150px" rowspan="3"><center>stock(real time)</center></th>
-       <th colspan="5" style="text-align: center;">วันที่จัดส่ง</th>
+       <th  style="vertical-align: middle;" rowspan="3">ชื่อสินค้า</th>
+       <th  style="vertical-align: middle;" rowspan="3">ราคา</th>
+       <th  style="vertical-align: middle;" rowspan="3"><center>stock(real time)</center></th>
+       <th colspan="1" width="50px" style="text-align: center;">วันที่จัดส่ง</th>
     </tr>
     <tr>
        <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+1 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+2 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+3 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+4 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+5 day", strtotime($eDate))));?></center></th>
     </tr>
     <tr>
-       <th width="70px"><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+2 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+3 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+4 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+5 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
     </tr>
   </thead>
   <tbody>
@@ -80,7 +72,7 @@ table, td, th {
     WHERE item.StatusRpt = 3
     AND saleorder.IsCancel = 0
     AND saleorder.IsFinish = 1
-    AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
+    AND date(saleorder.DueDate) = date('$sDate')
     AND wh_inventory.Branch_Code = 2
     GROUP BY item.Item_Code
     ORDER BY item.NameTH,item.SalePrice ASC";
@@ -90,13 +82,13 @@ table, td, th {
       while ($Result = mysql_fetch_assoc($meQuery)){
   ?>
     <tr>
-      <td width="10px"><?=$row?></td>
-      <td><?=$Result["NameTH"]?></td>
-      <td><?=$Result["SalePrice"]?></td>
-      <td><center><?=(int)$Result["Qty"]?></center></td>
+      <td width="10px"><center><?=$row?></center></td>
+      <td width="170px"><center><?=$Result["NameTH"]?></center></td>
+      <td width="50px"><center><?=$Result["SalePrice"]?></center></td>
+      <td width="150px"><center><?=(int)$Result["Qty"]?></center></td>
 
       <?php
-        for ($i=1; $i <=5 ; $i++) {
+        for ($i=1; $i <=1 ; $i++) {
           $flag = 0;
             switch ($i) {
               case '1': $datecheck = date('Y-m-d', strtotime("+1 day", strtotime($eDate))); break;

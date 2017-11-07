@@ -49,21 +49,9 @@ table, td, th {
     </tr>
     <tr>
        <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+1 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+2 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+3 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+4 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+5 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+6 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+7 day", strtotime($eDate))));?></center></th>
     </tr>
     <tr>
        <th><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+2 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+3 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+4 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+5 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+6 day", strtotime($eDate)));?></center></th>
-       <th><center><?=date('d', strtotime("+7 day", strtotime($eDate)));?></center></th>
     </tr>
   </thead>
   <tbody>
@@ -80,7 +68,7 @@ table, td, th {
       WHERE saleorder.Objective = 2
       AND saleorder.IsCancel = 0
       AND saleorder.IsFinish = 1
-      AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
+      AND date(saleorder.DueDate) = date('$sDate')
       GROUP BY item.Item_Code
       ORDER BY item.IsWater DESC,item.NameTH,item.SalePrice ASC";
           //echo $Sql;
@@ -94,7 +82,7 @@ table, td, th {
         <td width="50px"><?=$Result["SalePrice"]?></td>
 
         <?php
-          for ($i=1; $i <=7 ; $i++) {
+          for ($i=1; $i <=1 ; $i++) {
             $flag = 0;
               switch ($i) {
                 case '1': $datecheck = date('Y-m-d', strtotime("+1 day", strtotime($eDate))); break;
@@ -116,7 +104,7 @@ table, td, th {
               WHERE saleorder.Objective = 2
               AND saleorder.IsCancel = 0
               AND saleorder.IsFinish = 1
-              AND saleorder.DueDate LIKE '$datecheck%'
+              AND date(saleorder.DueDate) = date('$sDate')
               GROUP BY saleorder.Docno,item.Item_Code
               ORDER BY item.NameTH,saleorder.DueDate ASC";
               $meQuery2 = mysql_query($subsql);

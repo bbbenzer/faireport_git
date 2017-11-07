@@ -95,7 +95,7 @@ $lDate =  date('Y-m-d', $date);
         AND S.IsFinish = 1
 				AND DATE(S.DueDate) BETWEEN DATE('$sDate') AND DATE('$lDate')
 				GROUP BY S.DocNo
-				ORDER BY S.DueDate,customer.FName";
+				ORDER BY DATE(S.DueDate),DATE(S.DocDate) ASC";
 				$row = 1;
 				$meQuery = mysql_query( $Sql );
     			while ($Result = mysql_fetch_assoc($meQuery)){

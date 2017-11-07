@@ -33,7 +33,7 @@ table, td, th {
 
 </header>
 <body onload="window.print()">
-<center><b style="font-size: 24">ใบบันทึกรายการขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า)</b>
+<center><b style="font-size: 24">ใบบันทึกรายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</b>
 <br>389/2 หมู 5 ต.ยางเนิ้ง อ.สารภี เชียงใหม 50140
 <br>โทร. 0-5322-2828
 <br>Email : faibakerylanna@hotmail.com
@@ -46,21 +46,10 @@ table, td, th {
        <th  style="vertical-align: middle;" width="170px" rowspan="3">ชื่อสินค้า</th>
        <th  style="vertical-align: middle;" width="50px" rowspan="3">ราคา</th>
        <th  style="vertical-align: middle;" width="150px" rowspan="3"><center>stock(real time)</center></th>
-       <th colspan="5" style="text-align: center;">วันที่จัดส่ง</th>
+       <th colspan="1" width="50px" style="text-align: center;">วันที่จัดส่ง</th>
     </tr>
     <tr>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+1 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+2 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+3 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+4 day", strtotime($eDate))));?></center></th>
-       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+5 day", strtotime($eDate))));?></center></th>
-    </tr>
-    <tr>
-       <th width="70px"><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+2 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+3 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+4 day", strtotime($eDate)));?></center></th>
-       <th width="70px"><center><?=date('d', strtotime("+5 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
     </tr>
   </thead>
   <tbody>
@@ -77,10 +66,10 @@ table, td, th {
     INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
     INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
     INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
-    WHERE item.StatusRpt = 3
+    WHERE item.StatusRpt = 2
     AND saleorder.IsCancel = 0
     AND saleorder.IsFinish = 1
-    AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
+    AND date(saleorder.DueDate) = date('$sDate')
     AND wh_inventory.Branch_Code = 2
     GROUP BY item.Item_Code
     ORDER BY item.NameTH,item.SalePrice ASC";
@@ -90,13 +79,13 @@ table, td, th {
       while ($Result = mysql_fetch_assoc($meQuery)){
   ?>
     <tr>
-      <td width="10px"><?=$row?></td>
-      <td><?=$Result["NameTH"]?></td>
-      <td><?=$Result["SalePrice"]?></td>
-      <td><center><?=(int)$Result["Qty"]?></center></td>
+      <td width="150px"><?=$row?></td>
+      <td width="170px"><?=$Result["NameTH"]?></td>
+      <td width="50px"><?=$Result["SalePrice"]?></td>
+      <td width="150px"><center><?=(int)$Result["Qty"]?></center></td>
 
       <?php
-        for ($i=1; $i <=5 ; $i++) {
+        for ($i=1; $i <=1 ; $i++) {
           $flag = 0;
             switch ($i) {
               case '1': $datecheck = date('Y-m-d', strtotime("+1 day", strtotime($eDate))); break;
@@ -104,6 +93,8 @@ table, td, th {
               case '3': $datecheck = date('Y-m-d', strtotime("+3 day", strtotime($eDate))); break;
               case '4': $datecheck = date('Y-m-d', strtotime("+4 day", strtotime($eDate))); break;
               case '5': $datecheck = date('Y-m-d', strtotime("+5 day", strtotime($eDate))); break;
+              case '6': $datecheck = date('Y-m-d', strtotime("+6 day", strtotime($eDate))); break;
+              case '7': $datecheck = date('Y-m-d', strtotime("+7 day", strtotime($eDate))); break;
             }
             $subsql = "SELECT item.Item_Code,
             item.NameTH,
@@ -116,12 +107,12 @@ table, td, th {
             INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
             INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
             INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
-            WHERE item.StatusRpt = 3
+            WHERE item.StatusRpt = 2
             AND saleorder.IsCancel = 0
             AND saleorder.IsFinish = 1
             AND saleorder.DueDate LIKE '$datecheck%'
             AND wh_inventory.Branch_Code = 2
-            GROUP BY saleorder.DocNo,item.Item_Code
+            GROUP BY saleorder.Docno,item.Item_Code
             ORDER BY item.NameTH,saleorder.DueDate ASC";
             $meQuery2 = mysql_query($subsql);
               while ($Result2 = mysql_fetch_assoc($meQuery2)){
@@ -132,9 +123,9 @@ table, td, th {
               }
             if($flag==0)
             {
-              echo '<td  width="70px" style="color:#e3e3e3"><center>0</center></td>';
+              echo '<td width="50px" style="color:#e3e3e3"><center>0</center></td>';
             }else {
-            ?>  <td width="70px"><center><b><a style="text-decoration:none; color:#000000" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>')"><?=$flag?></a></b></center></td>
+            ?>  <td width="50px"><center><b><a style="text-decoration:none; color:#000000" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>')"><?=$flag?></a></b></center></td>
             <?}
         }
        ?>

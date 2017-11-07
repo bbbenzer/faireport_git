@@ -84,16 +84,12 @@ ORDER BY buffer_fac_order.xDt DESC LIMIT 1";
             <li><a style="color:#FE2E2E" href="#" onClick='getDateNow("m7_1.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">สต๊อก ตู้หน้าห้องแซนวิข</a></li>
             <li><a style="color:#FE2E2E" href="#" onClick='getDateNow("m7_2.php","fai_menu.php","<?=$xDate?>","stock1");'><img src="images/mobile_menu.png" class="ui-li-icon">สต๊อก ของกรอบ</a></li>
             <li><a style="color:#FE2E2E" href="#" onClick='getDateNow("m7_3.php","fai_menu.php","<?=$xDate?>","stock2");'><img src="images/mobile_menu.png" class="ui-li-icon">สต๊อก ขนมปัง,ของสด</a></li>
+						<li><a style="color:#0195c8" href="#" onclick="gotoUrl('fai_suborder.php','','')"><img src="images/mobile_menu.png" class="ui-li-icon">Advanced Order</a></li>
 
 
-            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m8.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m9.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m10.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-						<!-- <li><a style="color:#0195c8" href="#" onClick='getDateNow("preorder.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ออเดอร์ล่วงหน้า</a></li>
-						<li><a style="color:#0195c8" href="#" onClick='getDateNow("prebread.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-						<li><a style="color:#0195c8" href="#" onClick='getDateNow("precrisp.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-						<li><a style="color:#0195c8" href="#" onClick='getDateNow("prebreak.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li> -->
-						<li><a style="color:#0195c8" href="#" onclick="gotoUrl('fai_suborder.php','','')"><img src="images/mobile_menu.png" class="ui-li-icon">Fai SubOrder</a></li>
+            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m8.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า) (เจ๊ลินดา)</a></li>
+            <!-- <li><a style="color:#0101DF" href="#" onClick='getDateNow("m9.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
+            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m10.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li> -->
 
 		</ul>
 

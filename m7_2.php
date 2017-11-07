@@ -49,7 +49,7 @@ $flag = $_REQUEST["flag"];
  	<div data-demo-html="true">
 		<div data-role="header">
 			<a href="#" onClick='gotoMenu("fai_menu.php","<?=$eDate?>");' class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-circle-triangle-w ui-icon-carat-l">Back</a>
-            		<h1>รายการ สต๊อกสินค้า</h1>
+            		<h1>รายการ สต๊อกของกรอบ</h1>
 			<a href="#" onClick='gotoNewUrl("StockToDay.php","<?=$eDate?>",2);' class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-grid">Print</a>
 		</div>
 	</div>
@@ -59,7 +59,6 @@ $flag = $_REQUEST["flag"];
 			<thead style='height:35px;display:block;'>
 				<tr class="ui-bar-d">
                 	 <th  width="50px" data-priority="2">ลำดับ</th>
-					 <th  width="80px" data-priority="2">บาร์โค้ด</th>
 					 <th  width="200px">ชื่อสินค้า</th>
 					 <th  width="50px">ราคา</th>
                      <!-- <th  width="80px" data-priority="2">แบบ</th> -->
@@ -100,7 +99,6 @@ $flag = $_REQUEST["flag"];
 			?>
 				<tr>
 					<td  width="50px"><?=$row?></td>
-                    <td  width="80px"><?=$Result["Barcode"]?></td>
 					<td  width="200px" style="cursor: pointer;" onClick='gotoUrl("Receive.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$flag?>")'><?=$Result["NameTH"]?></td>
 					<td  width="50px"><?=$Result["SalePrice"]?></td>
                     <!--<td  width="80px"><?=$Result["IsForm"]?></td> -->

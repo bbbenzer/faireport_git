@@ -1,5 +1,6 @@
 <?php
 require 'db_connect.php';
+require 'class.php';
 date_default_timezone_set("Asia/Bangkok");
 $eDate = $_REQUEST["xDate"];
 $date = strtotime($eDate);
@@ -10,6 +11,7 @@ $date = strtotime($eDate);
 $date = strtotime("+5 day", $date);
 $lDate =  date('Y-m-d', $date);
 
+$dateobj = new DatetimeTH;
  ?>
 <html>
 <header>
@@ -40,20 +42,29 @@ table, td, th {
 <table class="table table-sm" data-role="table" style="font-size: 14" border="1">
   <thead>
     <tr>
-       <th  style="vertical-align: middle;" rowspan="2" data-priority="2">ลำดับ</th>
-       <th  style="vertical-align: middle;" rowspan="2">ชื่อสินค้า</th>
-       <th  style="vertical-align: middle;" rowspan="2">ราคา</th>
-       <th  style="vertical-align: middle;" rowspan="2">stock(real time)</th>
-       <th colspan="7" width="350px" style="text-align: center;">วันที่จัดส่ง</th>
+       <th  style="vertical-align: middle;" width="10px" rowspan="3" data-priority="2">ลำดับ</th>
+       <th  style="vertical-align: middle;" width="170px" rowspan="3">ชื่อสินค้า</th>
+       <th  style="vertical-align: middle;" width="50px" rowspan="3">ราคา</th>
+       <th  style="vertical-align: middle;" width="150px" rowspan="3"><center>stock(real time)</center></th>
+       <th colspan="7" width="490px" style="text-align: center;">วันที่จัดส่ง</th>
     </tr>
     <tr>
-       <th><?=date('d', strtotime("+1 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+2 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+3 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+4 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+5 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+6 day", strtotime($eDate)));?></th>
-       <th><?=date('d', strtotime("+7 day", strtotime($eDate)));?></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+1 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+2 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+3 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+4 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+5 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+6 day", strtotime($eDate))));?></center></th>
+       <th width="70px"><center><?=$dateobj->getTHday(date('l', strtotime("+7 day", strtotime($eDate))));?></center></th>
+    </tr>
+    <tr>
+       <th><center><?=date('d', strtotime("+1 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+2 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+3 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+4 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+5 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+6 day", strtotime($eDate)));?></center></th>
+       <th><center><?=date('d', strtotime("+7 day", strtotime($eDate)));?></center></th>
     </tr>
   </thead>
   <tbody>
@@ -86,7 +97,7 @@ table, td, th {
       <td width="150px"><?=$row?></td>
       <td width="170px"><?=$Result["NameTH"]?></td>
       <td width="50px"><?=$Result["SalePrice"]?></td>
-      <td width="150px"><?=$Result["Qty"]?></td>
+      <td width="150px"><center><?=(int)$Result["Qty"]?></center></td>
 
       <?php
         for ($i=1; $i <=7 ; $i++) {
@@ -127,9 +138,9 @@ table, td, th {
               }
             if($flag==0)
             {
-              echo '<td width="50px" style="color:#e3e3e3">0</td>';
+              echo '<td width="50px" style="color:#e3e3e3"><center>0</center></td>';
             }else {
-            ?>  <td width="50px"><b><a style="text-decoration:none; color:#000000" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>')"><?=$flag?></a></b></td>
+            ?>  <td width="50px"><center><b><a style="text-decoration:none; color:#000000" href="#" onclick="gotoUrlDetail('<?=$datecheck?>','<?=$Result["NameTH"]?>','<?=$eDate?>')"><?=$flag?></a></b></center></td>
             <?}
         }
        ?>
