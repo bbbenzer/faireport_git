@@ -71,6 +71,8 @@ table, td, th {
     AND saleorder.IsFinish = 1
     AND date(saleorder.DueDate) = date('$sDate')
     AND wh_inventory.Branch_Code = 2
+    AND saleorder.IsNormal = 1
+		AND item.IsForm = 2
     GROUP BY item.Item_Code
     ORDER BY item.NameTH,item.SalePrice ASC";
 
@@ -112,6 +114,8 @@ table, td, th {
             AND saleorder.IsFinish = 1
             AND saleorder.DueDate LIKE '$datecheck%'
             AND wh_inventory.Branch_Code = 2
+            AND saleorder.IsNormal = 1
+				    AND item.IsForm = 2
             GROUP BY saleorder.Docno,item.Item_Code
             ORDER BY item.NameTH,saleorder.DueDate ASC";
             $meQuery2 = mysql_query($subsql);
