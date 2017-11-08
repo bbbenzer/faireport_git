@@ -120,7 +120,7 @@ table, td, th {
             INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
             WHERE item.StatusRpt = 3
             AND saleorder.IsCancel = 0
-            AND date(saleorder.DueDate) = date('$datecheck%')
+            AND date(saleorder.DueDate) = date('$datecheck')
             AND wh_inventory.Branch_Code = 2
             AND (saleorder.Objective = 7
             OR saleorder.Objective = 1)
