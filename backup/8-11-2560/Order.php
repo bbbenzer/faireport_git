@@ -184,8 +184,6 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
         AND sale_pack_run.Cus_Code = '$CusCode'";
 
-        $list[] = '';
-        $count = 0;
 				$row = 1;
         $TotalQty1 = 0;
         $TotalQty2 = 0;
@@ -193,53 +191,22 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
     			while ($Result = mysql_fetch_assoc($meQuery)){
 
 					if( redtr($CusCode,$Result["Item_Code"],$eDate,$sDate) == true )
-						{
-              $list[$count] = $Result["Item_Code"];
-              $count++;
-              echo '<tr style="color:red;">';
-              ?>
-                    		<td><?=$row?></td>
-        					<th><?=$Result["Barcode"]?></th>
-                            <th style="cursor: pointer;" onClick='gotoUrl("item.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$CusCode?>","<?=$xUrl?>")'><?=$Result["NameTH"]?></th>
-                            <th><?=$Result["SalePrice"]?></th>
-                            <th><?=getOrderqty($CusCode,$Result["Item_Code"],$eDate)?></th>
-                            <th><?=getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate)?></th>
-        				</tr>
-        			<?
-                $TotalQty1 += getOrderqty($CusCode,$Result["Item_Code"],$eDate);
-                $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
-        				$row++;
-        			}
-            }
-
-            $meQuery = mysql_query( $Sql );
-        			while ($Result = mysql_fetch_assoc($meQuery)){
-
-                $flag = 0;
-                for ($i=0; $i <= $count ; $i++) {
-                  if($Result["Item_Code"]!=$list[$i])
-                  {
-                    $flag += 1;
-                  }
-                }
-
-            if($flag==2)
-            {
-        			?>
-            <tr>
-                		<td><?=$row?></td>
-    					<th><?=$Result["Barcode"]?></th>
-                        <th style="cursor: pointer;" onClick='gotoUrl("item.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$CusCode?>","<?=$xUrl?>")'><?=$Result["NameTH"]?></th>
-                        <th><?=$Result["SalePrice"]?></th>
-                        <th><?=getOrderqty($CusCode,$Result["Item_Code"],$eDate)?></th>
-                        <th><?=getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate)?></th>
-    				</tr>
-    			<?
-            $TotalQty1 += getOrderqty($CusCode,$Result["Item_Code"],$eDate);
-            $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
-    				$row++;
-    				}
-      }
+						echo '<tr style="color:red;">';
+					else
+						echo '<tr>';
+			?>
+            		<td><?=$row?></td>
+					<th><?=$Result["Barcode"]?></th>
+                    <th style="cursor: pointer;" onClick='gotoUrl("item.php","<?=$Result["Item_Code"]?>","<?=$eDate?>","<?=$CusCode?>","<?=$xUrl?>")'><?=$Result["NameTH"]?></th>
+                    <th><?=$Result["SalePrice"]?></th>
+                    <th><?=getOrderqty($CusCode,$Result["Item_Code"],$eDate)?></th>
+                    <th><?=getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate)?></th>
+				</tr>
+			<?
+        $TotalQty1 += getOrderqty($CusCode,$Result["Item_Code"],$eDate);
+        $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
+				$row++;
+				}
 			?>
             	<tr>
             		<td  colspan="4" >รวมทั้งสิ้น</td>
