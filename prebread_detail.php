@@ -88,6 +88,9 @@ $totalqty = 0;
         AND saleorder.IsCancel = 0
         AND saleorder.IsFinish = 1
 				AND wh_inventory.Branch_Code = 2
+				AND (saleorder.Objective = 7
+				OR saleorder.Objective = 1)
+				AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
 				GROUP BY customer.FName,saleorder.DocNo";
 						//echo $Sql;
 				$row = 1;
