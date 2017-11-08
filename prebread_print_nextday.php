@@ -71,9 +71,11 @@ table, td, th {
     INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
     WHERE item.StatusRpt = 3
     AND saleorder.IsCancel = 0
-    AND saleorder.IsFinish = 1
     AND date(saleorder.DueDate) = date('$sDate')
     AND wh_inventory.Branch_Code = 2
+    AND (saleorder.Objective = 7
+    OR saleorder.Objective = 1)
+    AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
     GROUP BY item.Item_Code
     ORDER BY item.NameTH,item.SalePrice ASC";
 
@@ -110,9 +112,11 @@ table, td, th {
             INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
             WHERE item.StatusRpt = 3
             AND saleorder.IsCancel = 0
-            AND saleorder.IsFinish = 1
-            AND saleorder.DueDate LIKE '$datecheck%'
+            AND date(saleorder.DueDate) = date('$datecheck%')
             AND wh_inventory.Branch_Code = 2
+            AND (saleorder.Objective = 7
+            OR saleorder.Objective = 1)
+            AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
             GROUP BY saleorder.DocNo,item.Item_Code
             ORDER BY item.NameTH,saleorder.DueDate ASC";
             $meQuery2 = mysql_query($subsql);

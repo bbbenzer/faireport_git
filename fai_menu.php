@@ -88,8 +88,8 @@ ORDER BY buffer_fac_order.xDt DESC LIMIT 1";
 
 
             <li><a style="color:#0101DF" href="#" onClick='getDateNow("m8.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการขนมปังก่อนเวลากรุ๊ป(ล่วงหน้า) (เจ๊ลินดา)</a></li>
-            <!-- <li><a style="color:#0101DF" href="#" onClick='getDateNow("m9.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
-            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m10.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li> -->
+            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m9.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
+            <li><a style="color:#0101DF" href="#" onClick='getDateNow("m10.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
 
 		</ul>
 
