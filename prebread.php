@@ -110,6 +110,7 @@ $dateobj = new DatetimeTH;
 				AND (saleorder.Objective = 7
 				OR saleorder.Objective = 1)
 				AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
+				AND item.IsBakery = 1
         GROUP BY item.Item_Code
         ORDER BY item.NameTH,item.SalePrice ASC";
 						//echo $Sql;
@@ -151,6 +152,7 @@ $dateobj = new DatetimeTH;
 								AND (saleorder.Objective = 7
 								OR saleorder.Objective = 1)
 								AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
+								AND item.IsBakery = 1
 								GROUP BY saleorder.DocNo,item.Item_Code
 								ORDER BY item.NameTH,saleorder.DueDate ASC";
         				$meQuery2 = mysql_query($subsql);

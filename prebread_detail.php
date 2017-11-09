@@ -91,6 +91,7 @@ $totalqty = 0;
 				AND (saleorder.Objective = 7
 				OR saleorder.Objective = 1)
 				AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
+				AND item.IsBakery = 1
 				GROUP BY customer.FName,saleorder.DocNo";
 						//echo $Sql;
 				$row = 1;
