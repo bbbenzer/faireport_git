@@ -75,6 +75,7 @@ table, td, th {
     AND wh_inventory.Branch_Code = 2
     AND (saleorder.Objective = 7
     OR saleorder.Objective = 1)
+    AND saleorder.IsFinish = 1
     AND (saleorder.IsFinish <> 2 OR saleorder.IsFinish <> 0 )
     AND item.IsBakery = 1
     GROUP BY item.Item_Code
