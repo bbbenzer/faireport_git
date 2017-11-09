@@ -69,6 +69,7 @@ table, td, th {
       AND saleorder.IsCancel = 0
       AND saleorder.IsFinish = 1
       AND date(saleorder.DueDate) = date('$sDate')
+      AND item.IsBakery = 1
       GROUP BY item.Item_Code
       ORDER BY item.IsWater DESC,item.NameTH,item.SalePrice ASC";
           //echo $Sql;

@@ -109,7 +109,8 @@ $dateobj = new DatetimeTH;
         WHERE saleorder.Objective = 2
         AND saleorder.IsCancel = 0
         AND saleorder.IsFinish = 1
-        AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
+        AND date(saleorder.DueDate) BETWEEN date('$sDate') AND date('$lDate')
+				AND item.IsBakery = 1
 				GROUP BY item.Item_Code
         ORDER BY item.IsWater DESC,item.NameTH,item.SalePrice ASC";
 						//echo $Sql;
@@ -153,7 +154,8 @@ $dateobj = new DatetimeTH;
                 WHERE saleorder.Objective = 2
                 AND saleorder.IsCancel = 0
                 AND saleorder.IsFinish = 1
-                AND saleorder.DueDate LIKE '$datecheck%'
+                AND date(saleorder.DueDate) = date('$datecheck')
+								AND item.IsBakery = 1
                 GROUP BY saleorder.Docno,item.Item_Code
                 ORDER BY item.NameTH,saleorder.DueDate ASC";
         				$meQuery2 = mysql_query($subsql);

@@ -59,7 +59,8 @@ table, td, th {
       WHERE saleorder.Objective = 2
       AND saleorder.IsCancel = 0
       AND saleorder.IsFinish = 1
-      AND saleorder.DueDate LIKE '$DueDate%'
+      AND date(saleorder.DueDate) = date('$DueDate')
+      AND item.IsBakery = 1
       GROUP BY item.Item_Code
       ORDER BY item.NameTH,item.SalePrice ASC";
           //echo $Sql;
