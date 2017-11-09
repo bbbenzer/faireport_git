@@ -83,7 +83,7 @@ $totalqty = 0;
         INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
 				INNER JOIN wh_inventory ON saleorder_detail.Item_Code = wh_inventory.Item_Code
         WHERE item.Item_Code = '$Item_Code'
-        AND saleorder.DueDate LIKE '$DueDate%'
+        AND date(saleorder.DueDate) = date('$DueDate')
         AND item.StatusRpt = 3
         AND saleorder.IsCancel = 0
         AND saleorder.IsFinish = 1
