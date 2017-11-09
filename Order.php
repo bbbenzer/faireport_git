@@ -184,7 +184,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
         AND sale_pack_run.Cus_Code = '$CusCode'";
 
-        $list[] = '';
+        $list = array();
         $count = 0;
 				$row = 1;
         $TotalQty1 = 0;
@@ -216,14 +216,14 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         			while ($Result = mysql_fetch_assoc($meQuery)){
 
                 $flag = 0;
-                for ($i=0; $i <= $count ; $i++) {
+                for ($i=0; $i <= ($count-1) ; $i++) {
                   if($Result["Item_Code"]!=$list[$i])
                   {
                     $flag += 1;
                   }
                 }
 
-            if($flag==2)
+            if($flag==$count)
             {
         			?>
             <tr>
@@ -238,7 +238,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
             $TotalQty1 += getOrderqty($CusCode,$Result["Item_Code"],$eDate);
             $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
     				$row++;
-    				}
+          }
       }
 			?>
             	<tr>
