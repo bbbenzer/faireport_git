@@ -70,6 +70,7 @@ table, td, th {
     AND saleorder.IsCancel = 0
     AND saleorder.IsFinish = 1
     AND date(saleorder.DueDate) = date('$sDate')
+    AND item.IsBakery = 1
     AND wh_inventory.Branch_Code = 2
     AND saleorder.IsNormal = 1
 		AND item.IsForm = 2

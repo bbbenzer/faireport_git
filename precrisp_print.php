@@ -84,7 +84,8 @@ table, td, th {
     WHERE item.StatusRpt = 2
     AND saleorder.IsCancel = 0
     AND saleorder.IsFinish = 1
-    AND saleorder.DueDate BETWEEN '$sDate' AND '$lDate'
+    AND date(saleorder.DueDate) BETWEEN date('$sDate') AND date('$lDate')
+    AND item.IsBakery = 1
     AND wh_inventory.Branch_Code = 2
     AND saleorder.IsNormal = 1
 		AND item.IsForm = 2
@@ -127,7 +128,8 @@ table, td, th {
             WHERE item.StatusRpt = 2
             AND saleorder.IsCancel = 0
             AND saleorder.IsFinish = 1
-            AND saleorder.DueDate LIKE '$datecheck%'
+            AND date(saleorder.DueDate) = date('$datecheck')
+            AND item.IsBakery = 1
             AND wh_inventory.Branch_Code = 2
             AND saleorder.IsNormal = 1
 				    AND item.IsForm = 2
