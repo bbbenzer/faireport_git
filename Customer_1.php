@@ -144,15 +144,25 @@ ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
 					$c2 = getCntSale($Result["Cus_Code"],$sDate,$eDate,1);
 				if( $c1 > $c2 ){
 			?>
-            		<tr style="cursor: pointer;color:red;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
-           <?   }else{ ?>
-                	<tr style="cursor: pointer;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
-           <? } ?>
-            		<td><?=$row?></td>
+					<tr style="cursor: pointer;color:red;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
+					<td><?=$row?></td>
 					<th><?=$Result["Cus_Code"]?> : <?=$Result["xName"]?></th>
-                    <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
-                    <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
-				</tr>
+          <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
+          <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
+					</tr>
+           <?   }elseif ($c1==$c2 && $c1!=0 && $c2!=0){ ?>
+                	<tr style="cursor: pointer;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
+										<td><?=$row?></td>
+										<th><?=$Result["Cus_Code"]?> : <?=$Result["xName"]?></th>
+					          <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
+					          <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
+										</tr>
+           <? }elseif ($c1==0 && $c2==0){ ?>
+
+           <? }elseif ($c1 < $c2){ ?>
+                	
+           <? } ?>
+
 			<?
 				$row++;
 				}

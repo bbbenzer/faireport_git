@@ -173,6 +173,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
         WHERE Date( saleorder.DueDate ) = '$eDate'
         AND saleorder.Cus_Code = '$CusCode'
+        AND saleorder.Objective = 1
 
         UNION
 
@@ -180,9 +181,11 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         item.Item_Code,item.Barcode,item.NameTH,item.SalePrice
         FROM sale_pack_run
         INNER JOIN sale_pack_run_detail ON sale_pack_run.DocNo = sale_pack_run_detail.DocNo
+        LEFT JOIN saleorder ON saleorder.DocNo = sale_pack_run.RefDocNo
         INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
         WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
-        AND sale_pack_run.Cus_Code = '$CusCode'";
+        AND sale_pack_run.Cus_Code = '$CusCode'
+        AND saleorder.Objective = 1";
 
         $list = array();
         $count = 0;
