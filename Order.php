@@ -59,7 +59,7 @@ function redtr($CusCode,$Item_Code,$eDate,$sDate)
     $TotalQty2 = $Result["Sum2"];
   }
 
-  if($TotalQty1 > $TotalQty2)
+  if($TotalQty1 > $TotalQty2 && ($TotalQty1!=0 && $TotalQty2!=0))
   {
     return true;
   }else {
@@ -225,7 +225,8 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
                     $flag += 1;
                   }
                 }
-
+          if(getOrderqty($CusCode,$Result["Item_Code"],$eDate)!=0 || getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate)!=0)
+          {
             if($flag==$count)
             {
         			?>
@@ -242,6 +243,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
             $TotalQty2 += getGetqty($CusCode,$Result["Item_Code"],$eDate,$sDate);
     				$row++;
           }
+        }
       }
 			?>
             	<tr>

@@ -32,7 +32,6 @@ function getCntOrder($cus_code,$xDate,$Obj){
 	INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
 	WHERE date(saleorder.DueDate) = date('$xDate')
 	AND saleorder.Objective = $Obj
-	AND saleorder.Objective = 1
 	AND saleorder.IsFinish = 3
   	AND saleorder.IsCancel = 0
 	AND saleorder.IsNormal = 1
@@ -150,17 +149,15 @@ ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
           <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
           <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
 					</tr>
-           <?   }elseif ($c1==$c2 && $c1!=0 && $c2!=0){ ?>
-                	<tr style="cursor: pointer;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
-										<td><?=$row?></td>
-										<th><?=$Result["Cus_Code"]?> : <?=$Result["xName"]?></th>
-					          <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
-					          <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
-										</tr>
            <? }elseif ($c1==0 && $c2==0){ ?>
 
-           <? }elseif ($c1 < $c2){ ?>
-                	
+           <? }else{ ?>
+						 <tr style="cursor: pointer;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
+							 <td><?=$row?></td>
+							 <th><?=$Result["Cus_Code"]?> : <?=$Result["xName"]?></th>
+							 <th><?=getCntOrder($Result["Cus_Code"],$eDate,1)?></th>
+							 <th><?=getCntSale($Result["Cus_Code"],$sDate,$eDate,1)?></th>
+							 </tr>
            <? } ?>
 
 			<?
