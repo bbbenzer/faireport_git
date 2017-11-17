@@ -59,7 +59,7 @@ function redtr($CusCode,$Item_Code,$eDate,$sDate)
     $TotalQty2 = $Result["Sum2"];
   }
 
-  if($TotalQty1 > $TotalQty2 && ($TotalQty1!=0 && $TotalQty2!=0))
+  if($TotalQty1 > $TotalQty2)
   {
     return true;
   }else {
