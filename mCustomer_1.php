@@ -30,7 +30,7 @@ CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
 FROM sale_pack_run
 inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND SO.Objective = 1
 AND sale_pack_run_detail.Item_Code = '$xItc'
 AND sale_pack_run.IsCancel = 0
@@ -130,7 +130,7 @@ CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
 FROM sale_pack_run
 inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND SO.Objective = 1
 AND sale_pack_run_detail.Item_Code = '$xItc'
 AND sale_pack_run.IsCancel = 0

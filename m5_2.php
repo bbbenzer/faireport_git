@@ -124,7 +124,7 @@ WHERE buffer_fac_order.SoQty < buffer_fac_order.RvQty
 AND buffer_fac_order.RvQty = 0 AND buffer_fac_order.FacQty > 0
 AND buffer_fac_order.Objective = 1
 AND buffer_fac_order.IsForm = 'ของกรอบ'
-AND DATE(xDt) = DATE('$eDate') ";
+AND buffer_fac_order.xDt BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00' ";
 if($Fl==2)
 	$Sql .= "ORDER BY  roomtype.roomname ASC,buffer_fac_order.SalePrice ASC" ;
 else

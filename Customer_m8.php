@@ -24,14 +24,14 @@ $xUrl = $_REQUEST["xUrl"];
 				$Sql = "SELECT saleorder_detail.Id,
 CONCAT(customer.FName,' ',customer.LName) AS xName,
 saleorder_detail.Qty,
-CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)  
-FROM sale_pack_run  
-inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo 
+CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
+FROM sale_pack_run
+inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00' 
+where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00' 
 AND SO.Objective = 1
-AND sale_pack_run_detail.Item_Code = '$xItc' 
-AND sale_pack_run.IsCancel = 0 
+AND sale_pack_run_detail.Item_Code = '$xItc'
+AND sale_pack_run.IsCancel = 0
 AND sale_pack_run.Cus_Code =  customer.Cus_Code
 ),0), DECIMAL(4,0) )  AS  SaleQty
 FROM saleorder
@@ -39,7 +39,7 @@ INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
 INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
 where date(saleorder.DueDate) = DATE('$eDate')
 AND saleorder_detail.Item_Code = '$xItc'
-AND saleorder.IsFinish = 3 
+AND saleorder.IsFinish = 3
 AND saleorder.IsCancel = 0
 AND saleorder.IsNormal = 1
 AND saleorder.Objective = 1";
@@ -54,13 +54,13 @@ AND saleorder.Objective = 1";
 					if( $c1 > $c2 ) $upeQuery = mysql_query( "UPDATE saleorder_detail SET chkOrder = 1 WHERE saleorder_detail.Id = '".$Result["Id"]."'" );
 				}
 ?>
-<!--	
+<!--
  *  -- ************************************************************
  -- Author		:	Tanadech
  -- Create date	:	03-09-2017
  -- Update By	:	Tanadech
  -- Update date	:   03-09-2017
- -- Description	:	
+ -- Description	:
  -- ************************************************************
 -->
 
@@ -82,7 +82,7 @@ AND saleorder.Objective = 1";
 			function gotoUrl(CusCode,DueDate) {
 				window.location.href = "Order.php?CusCode="+CusCode+"&xDate="+DueDate+"&xUrl=Customer.php";
 			}
-			
+
 		</script>
 	</head>
 
@@ -106,9 +106,9 @@ AND saleorder.Objective = 1";
 					 <th>สั่ง</th>
 				</tr>
 			</thead>
-		 
+
 			<tbody>
-			
+
 			<?
 				$Sql = "SELECT
 item.Barcode,
@@ -121,7 +121,7 @@ INNER JOIN saleorder_detail ON saleorder_detail.DocNo = saleorder.DocNo
 INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
 INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
 where date(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.IsFinish = 3 
+AND saleorder.IsFinish = 3
 AND saleorder.IsCancel = 0
 AND saleorder.IsNormal = 1
 AND saleorder.Objective = 1
@@ -134,7 +134,7 @@ OR item.Barcode LIKE '%8856129000238%'
 OR item.Barcode LIKE '%8856129000245%'
 OR item.Barcode LIKE '%8856129005967%'
 OR item.Barcode LIKE '%8856129007039%'
-						
+
 OR item.Barcode LIKE '%8856129003642%'
 OR item.Barcode LIKE '%8856129003130%'
 OR item.Barcode LIKE '%8856129003680%'
@@ -163,20 +163,18 @@ ORDER BY customer.Cus_Code ASC,saleorder_detail.chkOrder DESC,item.SalePrice ASC
 				</tr>
 			<?
 				$row++;
-				
+
 				}
-			?>  
+			?>
 
 			</tbody>
 		</table>
     </form>
-</div> 
+</div>
 
 <div data-role="footer">
 			<h1>FAI BAKERY CHIANGMAI</h1>
 </div>
-	
+
 	</body>
 </html>
-
-

@@ -9,13 +9,13 @@ $date = strtotime("-1 day", $date);
 $sDate =  date('Y-m-d', $date);
 
 ?>
-<!--	
+<!--
  *  -- ************************************************************
  -- Author		:	Tanadech
  -- Create date	:	03-09-2017
  -- Update By	:	Tanadech
  -- Update date	:   03-09-2017
- -- Description	:	
+ -- Description	:
  -- ************************************************************
 -->
 
@@ -54,7 +54,7 @@ $sDate =  date('Y-m-d', $date);
 		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
 			<thead>
 				<tr class="ui-bar-d">
-                	 <th data-priority="2">ลำดับ</th>	
+                	 <th data-priority="2">ลำดับ</th>
 					 <th data-priority="2">บาร์โค้ด</th>
 					 <th>ชื่อสินค้า</th>
 					 <th>ราคา</th>
@@ -66,9 +66,9 @@ $sDate =  date('Y-m-d', $date);
                      <th data-priority="2" >stock</th>
 				</tr>
 			</thead>
-		 
+
 			<tbody>
-			
+
 			<?
 				$chk = 0;
 				$meQuery = mysql_query( "SELECT chk_fac.order_fac FROM chk_fac" );
@@ -91,15 +91,15 @@ if($chk==0){
 						END AS IsForm,
 						facorderdetail.Objective,
 						facorderdetail.roomtypeID,
-						CONVERT( IFNULL((SELECT Sum(saleorder_detail.Qty) 
-						FROM saleorder 
-						inner join saleorder_detail on saleorder_detail.DocNo = saleorder.DocNo 
-						where date(saleorder.DueDate) = date(facorder.DueDate) 
+						CONVERT( IFNULL((SELECT Sum(saleorder_detail.Qty)
+						FROM saleorder
+						inner join saleorder_detail on saleorder_detail.DocNo = saleorder.DocNo
+						where date(saleorder.DueDate) = date(facorder.DueDate)
 						AND saleorder_detail.Item_Code = item.Item_Code
-						AND saleorder.IsFinish = 3 
+						AND saleorder.IsFinish = 3
 						AND saleorder.IsCancel = 0
-						AND saleorder.Objective = facorderdetail.Objective 
-						AND saleorder.IsNormal = 1 ),0), 
+						AND saleorder.Objective = facorderdetail.Objective
+						AND saleorder.IsNormal = 1 ),0),
 						DECIMAL(4,0) )  AS  OrderQty,
 						facorderdetail.ItemFormula1,
 						CONVERT( IFNULL((SELECT
@@ -117,27 +117,27 @@ if($chk==0){
 						WHERE DATE(itemstock.DueDate) = '2017-09-12'
 						AND itemstock.ItemCode = facorderdetail.Item_Code
 						),0), DECIMAL(4,0) ) AS Carry,
-						CONVERT( IFNULL((SELECT Sum(wh_stock_receive_sub.Qty) 
-						FROM wh_stock_receive 
-						inner join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo 
-						where wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'      
-						AND wh_stock_receive_sub.Item_Code = item.Item_Code 
+						CONVERT( IFNULL((SELECT Sum(wh_stock_receive_sub.Qty)
+						FROM wh_stock_receive
+						inner join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo
+						where wh_stock_receive.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
+						AND wh_stock_receive_sub.Item_Code = item.Item_Code
 						AND wh_stock_receive.Branch_Code = 2 ),0),DECIMAL(4,0) ) AS  ReceiveQty,
 						CONVERT( IFNULL((SELECT SUM(wh_stock_transmit_sub.Qty)
 						FROM wh_stock_transmit
 						INNER JOIN wh_stock_transmit_sub ON wh_stock_transmit.DocNo = wh_stock_transmit_sub.DocNo
-						where wh_stock_transmit.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00' 
-						AND wh_stock_transmit_sub.Item_Code = item.Item_Code 
+						where wh_stock_transmit.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
+						AND wh_stock_transmit_sub.Item_Code = item.Item_Code
 						AND wh_stock_transmit.Branch_Code = 2
 						GROUP BY wh_stock_transmit_sub.Item_Code ),0),DECIMAL(4,0) ) AS  TransmitQty,
-						CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)  
-						FROM sale_pack_run  
-						inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo 
+						CONVERT( IFNULL((SELECT Sum(sale_pack_run_detail.Qty)
+						FROM sale_pack_run
+						inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 						INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-						where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00' 
+						where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 						AND SO.Objective = 1
-						AND sale_pack_run_detail.Item_Code = item.Item_Code  
-						AND sale_pack_run.IsCancel = 0  
+						AND sale_pack_run_detail.Item_Code = item.Item_Code
+						AND sale_pack_run.IsCancel = 0
 						),0), DECIMAL(4,0) )  AS  SaleQty,
 						CONVERT( IFNULL((SELECT Qty
 						FROM wh_inventory
@@ -174,7 +174,7 @@ if($chk==0){
                     <td><?=$Result["ReceiveQty"]-$Result["TransmitQty"]?></th>
 					<td><?=$Result["SaleQty"]?></th>
                     <td><?=$Result["STockQty"]?></th>
-                    
+
 				</tr>
 			<?
 				$Item_Code  = $Result["Item_Code"];
@@ -189,11 +189,11 @@ if($chk==0){
 				$StQty		= $Result["STockQty"];
 				$Objective	= $Result["Objective"];
 				$roomtypeID = $Result["roomtypeID"];
-				
-				$upSql = "INSERT INTO buffer_fac_order 
+
+				$upSql = "INSERT INTO buffer_fac_order
 				(xDt,roomtypeID,Item_Code,Barcode,NameTH,SalePrice,IsForm,SoQty,
 				FacQty,RvQty,SaQty,StQty,Objective)
-				VALUES 
+				VALUES
 				(
 				NOW(),$roomtypeID,'$Item_Code','$Barcode','$NameTH',$SalePrice,'$IsForm'
 				,$SoQty,$FacQty,$RvQty,$SaQty,$StQty,$Objective
@@ -202,20 +202,18 @@ if($chk==0){
 				$upQuery = mysql_query( $upSql );
 				$row++;
 				}
-				
+
 }
 $upQuery = mysql_query( "UPDATE chk_fac SET order_fac = 0" );
-			?>  
+			?>
 			</tbody>
 		</table>
- 
-</div> 
+
+</div>
 
 <div data-role="footer">
 			<h1>FAI BAKERY CHIANGMAI</h1>
 </div>
-	
+
 	</body>
 </html>
-
-

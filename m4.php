@@ -97,7 +97,7 @@ $sDate =  date('Y-m-d', $date);
 							"SELECT Sum(wh_stock_receive_sub.Qty) ".
 							"FROM wh_stock_receive ".
 							"inner join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo  ".
-							"where wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'   ".
+							"where wh_stock_receive.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'   ".
 							"AND wh_stock_receive_sub.Item_Code = item.Item_Code AND wh_stock_receive.Branch_Code = 2 ),0),  ".
 							"DECIMAL(4,0) ) AS  ReceiveQty, ".
 							"CONVERT( IFNULL((  ".
@@ -105,7 +105,7 @@ $sDate =  date('Y-m-d', $date);
 							"FROM sale_pack_run   ".
 							"inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo  ".
 							"INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo ".
-							"where sale_pack_run.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'  ".
+							"where sale_pack_run.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'  ".
 							"AND SO.Objective = 1 ".
 							"AND sale_pack_run_detail.Item_Code = item.Item_Code ".
 							"AND sale_pack_run.IsCancel = 0 ".
@@ -121,7 +121,7 @@ $sDate =  date('Y-m-d', $date);
 							"SELECT Sum(wh_stock_receive_sub.Qty) ".
 							"FROM wh_stock_receive  ".
 							"inner join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo ".
-							"where wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00' ".
+							"where wh_stock_receive.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00' ".
 							"AND wh_stock_receive_sub.Item_Code = item.Item_Code AND wh_stock_receive.Branch_Code = 2 ),0), ".
 							"DECIMAL(4,0) ) = 0 ".
 							"ORDER BY item.SalePrice ASC,item.NameTH ASC " ;

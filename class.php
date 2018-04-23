@@ -2,6 +2,44 @@
 
 class DatetimeTH
 {
+  public function getNumber($day)
+  {
+    $TH = '';
+    switch ($day) {
+      case '1':
+        $TH = '01';
+        break;
+      case '2':
+        $TH = '02';
+        break;
+      case '3':
+        $TH = '03';
+        break;
+      case '4':
+        $TH = '04';
+        break;
+      case '5':
+        $TH = '05';
+        break;
+      case '6':
+        $TH = '06';
+        break;
+      case '7':
+        $TH = '07';
+        break;
+      case '8':
+        $TH = '08';
+        break;
+      case '9':
+        $TH = '09';
+        break;
+      default:
+        $TH = $day;
+    }
+
+    return $TH;
+  }
+
   public function getTHday($day)
   {
     $TH = '';

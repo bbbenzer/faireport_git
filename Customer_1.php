@@ -12,13 +12,26 @@ $xUrl = $_REQUEST["xUrl"];
 
 function getCntSale($cus_code,$Date1,$Date2,$Obj){
 	$row = 0;
-	$Sql = "SELECT Sum(sale_pack_run_detail.Qty)
-	FROM sale_pack_run
-	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
-	where sale_pack_run.DocDate BETWEEN '$Date1 17:00:00' AND '$Date2 16:00:00'
-	AND sale_pack_run.Cus_Code = '$cus_code'
-	AND sale_pack_run.IsCancel = 0
-	GROUP BY sale_pack_run_detail.Item_Code";
+	$Sql = "SELECT
+        item.Item_Code,item.Barcode,item.NameTH,item.SalePrice
+        FROM saleorder
+        INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
+        INNER JOIN item ON saleorder_detail.Item_Code = item.Item_Code
+        WHERE Date( saleorder.DueDate ) = '$Date1'
+        AND saleorder.Cus_Code = '$cus_code'
+        AND saleorder.Objective = 1
+
+        UNION
+
+        SELECT
+        item.Item_Code,item.Barcode,item.NameTH,item.SalePrice
+        FROM sale_pack_run
+        INNER JOIN sale_pack_run_detail ON sale_pack_run.DocNo = sale_pack_run_detail.DocNo
+        LEFT JOIN saleorder ON saleorder.DocNo = sale_pack_run.RefDocNo
+        INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
+        WHERE sale_pack_run.Modify_Date BETWEEN '$Date1 15:00:00' AND '$Date2 15:00:00'
+        AND sale_pack_run.Cus_Code = '$cus_code'
+        AND saleorder.Objective = 1";
 	$meQuery = mysql_query( $Sql );
     while ($Result = mysql_fetch_assoc($meQuery)){
 		$row++;
@@ -61,7 +74,7 @@ $Sql = "SELECT customer.Cus_Code,
 CONCAT(customer.FName,' ',customer.LName) AS xName
 FROM customer
 INNER JOIN sale_pack_run ON sale_pack_run.Cus_Code = customer.Cus_Code
-WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND customer.IsBranch != 1
 GROUP BY customer.Cus_Code
 ORDER BY customer.NoCusOrder ASC";
@@ -131,7 +144,7 @@ $Sql = "SELECT customer.Cus_Code,
 CONCAT(customer.FName,' ',customer.LName) AS xName
 FROM customer
 INNER JOIN sale_pack_run ON sale_pack_run.Cus_Code = customer.Cus_Code
-WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND customer.IsBranch != 1
 GROUP BY customer.Cus_Code
 ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
@@ -161,7 +174,10 @@ ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
            <? } ?>
 
 			<?
+			if($c2!=0)
+			{
 				$row++;
+			}
 				}
 			?>
 			</tbody>

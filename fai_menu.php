@@ -91,6 +91,11 @@ ORDER BY buffer_fac_order.xDt DESC LIMIT 1";
             <!-- <li><a style="color:#0101DF" href="#" onClick='getDateNow("m9.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการของกรอบก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li>
             <li><a style="color:#0101DF" href="#" onClick='getDateNow("m10.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายการเบรคก่อนเวลากรุ๊ป(ล่วงหน้า)</a></li> -->
 
+						<li><a style="color:#963939" href="#" onClick='getDateNow("checkbillorder.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ตรวจสอบการส่งบิลออเดอร์</a></li>
+						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_bakery.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ใบสรุปรายการขนมชิ้น - ลูกค้าสั่ง</a></li>
+						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_break.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ใบสรุปขนมเบรค</a></li>
+						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_cupcake.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายงานคัพเค้ก</a></li>
+						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_softcake.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายงานขนมห้องซอฟต์เค้ก</a></li>
 		</ul>
 
 	</div>

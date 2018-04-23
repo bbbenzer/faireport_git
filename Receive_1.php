@@ -90,7 +90,7 @@ wh_stock_receive_sub.Modify_Date
 FROM wh_stock_receive
 INNER join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo
 INNER JOIN item ON wh_stock_receive_sub.Item_Code = item.Item_Code
-WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND wh_stock_receive_sub.Item_Code = '$xItc'
 AND wh_stock_receive.Branch_Code = 2";
 				$row = 1;

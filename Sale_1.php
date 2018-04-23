@@ -60,7 +60,7 @@ INNER JOIN sale_pack_run_detail ON sale_pack_run_detail.DocNo = sale_pack_run.Do
 INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
 INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
 INNER JOIN customer ON sale_pack_run.Cus_Code = customer.Cus_Code
-where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND SO.Objective = 1
 AND sale_pack_run_detail.Item_Code = '$xItc'
 AND sale_pack_run.IsCancel = 0";
@@ -172,7 +172,7 @@ INNER JOIN sale_pack_run_detail ON sale_pack_run_detail.DocNo = sale_pack_run.Do
 INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
 INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
 INNER JOIN customer ON sale_pack_run.Cus_Code = customer.Cus_Code
-where sale_pack_run.DocDate BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 AND SO.Objective = 1
 AND sale_pack_run_detail.Item_Code = '$xItc'
 AND sale_pack_run.IsCancel = 0

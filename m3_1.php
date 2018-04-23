@@ -145,7 +145,7 @@ FROM buffer_fac_order
 LEFT JOIN roomtype ON buffer_fac_order.roomtypeID = roomtype.roomtypeID
 WHERE buffer_fac_order.Objective = 1
 AND buffer_fac_order.Item_Code LIKE '%$xItc%'
-AND DATE(xDt) = DATE('$eDate') ";
+AND buffer_fac_order.xDt BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00' ";
 
 if($IS==1)
   $Sql .= "AND buffer_fac_order.IsForm = 'ชิ้น' ";

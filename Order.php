@@ -49,7 +49,7 @@ function redtr($CusCode,$Item_Code,$eDate,$sDate)
   $Sql = "SELECT Sum(sale_pack_run_detail.Qty) AS Sum2
 	FROM sale_pack_run
 	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
-	where sale_pack_run.DocDate BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+	where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 	AND sale_pack_run.Cus_Code = '$CusCode'
 	AND sale_pack_run.IsCancel = 0
 	AND sale_pack_run_detail.Item_Code = '$Item_Code'
@@ -95,7 +95,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
   $Sql = "SELECT Sum(sale_pack_run_detail.Qty) AS Sum2
 	FROM sale_pack_run
 	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
-	where sale_pack_run.DocDate BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+	where sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 	AND sale_pack_run.Cus_Code = '$CusCode'
 	AND sale_pack_run.IsCancel = 0
 	AND sale_pack_run_detail.Item_Code = '$Item_Code'
@@ -183,7 +183,7 @@ function getGetqty($CusCode,$Item_Code,$eDate,$sDate)
         INNER JOIN sale_pack_run_detail ON sale_pack_run.DocNo = sale_pack_run_detail.DocNo
         LEFT JOIN saleorder ON saleorder.DocNo = sale_pack_run.RefDocNo
         INNER JOIN item ON sale_pack_run_detail.Item_Code = item.Item_Code
-        WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 19:00:00' AND '$eDate 19:00:00'
+        WHERE sale_pack_run.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
         AND sale_pack_run.Cus_Code = '$CusCode'
         AND saleorder.Objective = 1";
 

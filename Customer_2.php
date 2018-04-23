@@ -11,19 +11,19 @@ $xUrl = $_REQUEST["xUrl"];
 
 function getCntSale($cus_code,$Date1,$Date2,$Obj){
 	$row = 0;
-	$Sql = "SELECT Sum(sale_pack_run_detail.Qty)  
-	FROM sale_pack_run  
-	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo 
+	$Sql = "SELECT Sum(sale_pack_run_detail.Qty)
+	FROM sale_pack_run
+	inner join sale_pack_run_detail on sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 	INNER JOIN saleorder AS SO ON sale_pack_run.RefDocNo = SO.DocNo
-	where sale_pack_run.DocDate BETWEEN '$Date1 17:00:00' AND '$Date2 16:00:00' 
+	where sale_pack_run.DocDate BETWEEN '$Date1 15:00:00' AND '$Date2 15:00:00'
 	AND date(SO.DueDate) = date('$Date2')
 	AND SO.Objective = $Obj
 	AND SO.Objective = 1
 	AND SO.IsFinish = 3 
   	AND SO.IsCancel = 0
-	AND SO.IsNormal = 1 
+	AND SO.IsNormal = 1
 	AND sale_pack_run.Cus_Code = '$cus_code'
-	AND sale_pack_run.IsCancel = 0  
+	AND sale_pack_run.IsCancel = 0
 	GROUP BY sale_pack_run_detail.Item_Code";
 	$meQuery = mysql_query( $Sql );
     while ($Result = mysql_fetch_assoc($meQuery)){
@@ -36,33 +36,33 @@ function getCntOrder($cus_code,$xDate,$Obj){
 	$Sql1 = "SELECT Sum(saleorder_detail.Qty)
 	FROM saleorder
 	INNER JOIN saleorder_detail ON saleorder.DocNo = saleorder_detail.DocNo
-	WHERE date(saleorder.DueDate) = date('$xDate') 
+	WHERE date(saleorder.DueDate) = date('$xDate')
 	AND saleorder.Objective = $Obj
 	AND saleorder.Objective = 1
-	AND saleorder.IsFinish = 3 
+	AND saleorder.IsFinish = 3
   	AND saleorder.IsCancel = 0
-	AND saleorder.IsNormal = 1 
+	AND saleorder.IsNormal = 1
 	AND saleorder.Cus_Code = '$cus_code'
 	GROUP BY saleorder_detail.Item_Code";
-	$result1 = mysql_query( $Sql1 );					
+	$result1 = mysql_query( $Sql1 );
 	while ($Row1 = mysql_fetch_array($result1)){
 		$row++;
    	}
 	return $row;
 }
-				
+
 $upeQuery = mysql_query( "UPDATE customer SET chkOrder = 0" );
 $Sql = "SELECT customer.Cus_Code,
 CONCAT(customer.FName,' ',customer.LName) AS xName
 FROM saleorder
 INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
 where date(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.IsFinish = 3 
+AND saleorder.IsFinish = 3
 AND saleorder.IsCancel = 0
 AND saleorder.IsNormal = 1
 AND saleorder.Objective = 1
 AND customer.IsBranch = 1
-GROUP BY customer.Cus_Code 
+GROUP BY customer.Cus_Code
 ORDER BY customer.chkOrder DESC";
 $meQuery = mysql_query( $Sql );
     			while ($Result = mysql_fetch_assoc($meQuery)){
@@ -71,13 +71,13 @@ $meQuery = mysql_query( $Sql );
 				if( $c1 > $c2 ) mysql_query("UPDATE customer SET chkOrder = 1 WHERE Cus_Code = '".$Result["Cus_Code"]. "'");
 				}
 ?>
-<!--	
+<!--
  *  -- ************************************************************
  -- Author		:	Tanadech
  -- Create date	:	03-09-2017
  -- Update By	:	Tanadech
  -- Update date	:   03-09-2017
- -- Description	:	
+ -- Description	:
  -- ************************************************************
 -->
 
@@ -94,7 +94,7 @@ $meQuery = mysql_query( $Sql );
 			function gotoUrl(CusCode,DueDate) {
 				window.location.href = "Order.php?CusCode="+CusCode+"&xDate="+DueDate+"&xUrl=Customer_2.php";
 			}
-			
+
 			function gotoMenu(xLink,DueDate) {
 				location.href = xLink+"?xDate="+DueDate;
 			}
@@ -121,21 +121,21 @@ $meQuery = mysql_query( $Sql );
                      <th>get</th>
 				</tr>
 			</thead>
-		 
+
 			<tbody>
-			
+
 			<?
 $Sql = "SELECT customer.Cus_Code,
 CONCAT(customer.FName,' ',customer.LName) AS xName
 FROM saleorder
 INNER JOIN customer ON saleorder.Cus_Code = customer.Cus_Code
 where date(saleorder.DueDate) = DATE('$eDate')
-AND saleorder.IsFinish = 3 
+AND saleorder.IsFinish = 3
 AND saleorder.IsCancel = 0
 AND saleorder.IsNormal = 1
 AND saleorder.Objective = 1
 AND customer.IsBranch = 1
-GROUP BY customer.Cus_Code 
+GROUP BY customer.Cus_Code
 ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
 
 				$row = 1;
@@ -143,10 +143,10 @@ ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
     			while ($Result = mysql_fetch_assoc($meQuery)){
 					$c1 = getCntOrder($Result["Cus_Code"],$eDate,1);
 					$c2 = getCntSale($Result["Cus_Code"],$sDate,$eDate,1);
-				if( $c1 > $c2 ){ 
+				if( $c1 > $c2 ){
 			?>
             		<tr style="cursor: pointer;color:red;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
-           <?   }else{ ?>     
+           <?   }else{ ?>
                 	<tr style="cursor: pointer;" onClick='gotoUrl("<?=$Result["Cus_Code"]?>","<?=$eDate?>")'>
            <? } ?>
             		<td><?=$row?></td>
@@ -157,17 +157,15 @@ ORDER BY customer.chkOrder DESC,customer.NoCusOrder ASC";
 			<?
 				$row++;
 				}
-			?>  
+			?>
 			</tbody>
 		</table>
     </form>
-</div> 
+</div>
 
 <div data-role="footer">
 			<h1>FAI BAKERY CHIANGMAI</h1>
 </div>
-	
+
 	</body>
 </html>
-
-

@@ -153,13 +153,13 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			IFNULL((SELECT IFNULL(SUM(itemstock.Qty),0)
 			FROM itemstock
 			WHERE itemstock.ItemCode = '$xItc'
-			AND DATE(itemstock.DueDate) = DATE('$eDate')),0) AS bringqty,
+			AND itemstock.DueDate = '$eDate'),0) AS bringqty,
 
 			IFNULL((SELECT IFNULL(SUM(facorderdetail.SaleOrderQty),0)
 			FROM facorderdetail
 			INNER JOIN facorder ON facorder.DocNo = facorderdetail.DocNo
 			WHERE facorderdetail.Item_Code = '$xItc'
-			AND DATE(facorder.DueDate) = DATE('$eDate')
+			AND facorder.DueDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 			AND facorderdetail.Objective = 1),0) AS comqty,
 
 			IFNULL((SELECT
@@ -167,7 +167,7 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM wh_stock_receive
 			INNER join wh_stock_receive_sub on wh_stock_receive_sub.DocNo = wh_stock_receive.DocNo
 			INNER JOIN item ON wh_stock_receive_sub.Item_Code = item.Item_Code
-			WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+			WHERE wh_stock_receive.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 			AND wh_stock_receive_sub.Item_Code = '$xItc'
 			AND wh_stock_receive.Branch_Code = 2)
 			-
@@ -175,7 +175,7 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM wh_stock_transmit
 			INNER join wh_stock_transmit_sub on wh_stock_transmit_sub.DocNo = wh_stock_transmit.DocNo
 			INNER JOIN item ON wh_stock_transmit_sub.Item_Code = item.Item_Code
-			WHERE wh_stock_transmit.Modify_Date BETWEEN '$sDate 17:00:00' AND '$eDate 16:00:00'
+			WHERE wh_stock_transmit.Modify_Date BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 			AND wh_stock_transmit_sub.Item_Code = '$xItc'
 			AND wh_stock_transmit.Branch_Code = 2)
 			)
@@ -185,7 +185,7 @@ onClick='gotoFilter("m3_1_1.php","<?=$eDate?>",<?=$Fl?>,5,"<?=$xItc?>","<?=$xUrl
 			FROM sale_pack_run_detail
 			INNER JOIN sale_pack_run ON sale_pack_run_detail.DocNo = sale_pack_run.DocNo
 			WHERE sale_pack_run_detail.Item_Code = '$xItc'
-			AND DATE(sale_pack_run.DocDate) = DATE('$eDate')
+			AND sale_pack_run.DocDate BETWEEN '$sDate 15:00:00' AND '$eDate 15:00:00'
 			AND sale_pack_run.IsCancel = 0
 			AND sale_pack_run.Objective = 0),0) AS saleqty
 			FROM roomtype
