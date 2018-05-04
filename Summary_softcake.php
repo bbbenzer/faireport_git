@@ -60,7 +60,12 @@ $dateobj = new DatetimeTH;
         <center>
           วันที่<select name="day" id="day">
             <?php for ($i=1; $i <=31 ; $i++) {
-              echo  '<option value="'.$dateobj->getNumber($i).'">'.$dateobj->getNumber($i).'</option>';
+              if($i==date('d')){
+                $msg = "selected";
+              }else{
+                $msg = "";
+              }
+              echo  '<option value="'.$dateobj->getNumber($i).'" '.$msg.'>'.$dateobj->getNumber($i).'</option>';
             } ?>
           </select>
         </center>
@@ -70,7 +75,12 @@ $dateobj = new DatetimeTH;
             เดือน
             <select name="month" id="month">
               <?php for ($i=1; $i <=12 ; $i++) {
-                echo  '<option value="'.$dateobj->getNumber($i).'">'.$dateobj->getTHmonth(date('F',strtotime('2018-'.$dateobj->getNumber($i).'-01'))).'</option>';
+								if($dateobj->getNumber($i)==date('m')){
+	                $msg = "selected";
+	              }else{
+	                $msg = "";
+	              }
+                echo  '<option value="'.$dateobj->getNumber($i).'" '.$msg.'>'.$dateobj->getTHmonth(date('F',strtotime('2018-'.$dateobj->getNumber($i).'-01'))).'</option>';
               } ?>
             </select>
           </center>
@@ -111,19 +121,20 @@ $dateobj = new DatetimeTH;
 
                                and saleorder.Objective = '1'
 
-                               and item.Item_Code IN ('504010231'
-            																				,'405010225'
+                               and item.Item_Code IN ('0504010231'
+            																				,'0405010225'
             																				,'9900000435'
-            																				,'405010216'
-            																				,'504010245'
+            																				,'0405010216'
+            																				,'0504010245'
             																				,'1105010207'
             																				,'1105010204'
-            																				,'504010235'
-            																				,'504010236'
-            																				,'504010225'
-            																				,'504010227'
-            																				,'504010228'
-            																				,'504010243'
+            																				,'0504010235'
+            																				,'0504010236'
+            																				,'0504010225'
+            																				,'0504010227'
+            																				,'0504010228'
+            																				,'0504010243'
+                                                    ,'0405010216'
             																				)
 
                                GROUP BY NameTH,SalePrice
@@ -133,16 +144,56 @@ $dateobj = new DatetimeTH;
                   while ($Result_m = mysql_fetch_assoc($meQuery)) {
                   $tempNameTH = $Result_m["NameTH"];
                   $tempSalePrice = $Result_m["SalePrice"];
+
+                  $Sql_sum="SELECT NameTH,SalePrice,SUM(sd.Qty) AS QtyOrder,CONCAT(FName,'  ',LName) AS Customer,
+                          DATE(saleorder.DueDate) AS Duedate
+                          ,sd.Price,sd.DocNo,customer.IsBranch
+
+                          from saleorder_detail AS sd
+                          LEFT JOIN saleorder on saleorder.DocNo = sd.DocNo
+                          LEFT JOIN customer on customer.Cus_Code = saleorder.Cus_Code
+                          LEFT JOIN item on item.Item_Code = sd.Item_Code
+
+                          where DATE(saleorder.DueDate) = DATE('$eDate')
+
+                           and IsBakery = '1'
+
+                           and saleorder.Objective = '1'
+
+                           and item.Item_Code IN ('0504010231'
+                                                ,'0405010225'
+                                                ,'9900000435'
+                                                ,'0405010216'
+                                                ,'0504010245'
+                                                ,'1105010207'
+                                                ,'1105010204'
+                                                ,'0504010235'
+                                                ,'0504010236'
+                                                ,'0504010225'
+                                                ,'0504010227'
+                                                ,'0504010228'
+                                                ,'0504010243'
+                                                ,'0405010216'
+                                                )
+                           and item.NameTH = '$tempNameTH' and item.SalePrice = '$tempSalePrice'
+
+                           GROUP BY NameTH
+
+                          ORDER BY IsBranch,Customer,NameTH,SalePrice";
+                          $meQueryx = mysql_query($Sql_sum);
+                          while ($Resultx = mysql_fetch_assoc($meQueryx)) {
+                            $Sum = $Resultx["QtyOrder"];
+                          }
                   ?>
 
                   <div style="margin-left:10px; font-size:20px; font-weight:bold;">
-                    ► <?=$Result_m["NameTH"]?> &nbsp;&nbsp;&nbsp;&nbsp;ราคา <?=$Result_m["SalePrice"]?>
+                    ► <?=$Result_m["NameTH"]?> &nbsp;&nbsp;&nbsp;&nbsp;ราคา <?=$Result_m["SalePrice"] ?> &nbsp;&nbsp;&nbsp;&nbsp;รวม <?=$Sum?>
                   </div>
                   <hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
 
                   <?php $Sql_sub = "SELECT NameTH,SalePrice,SUM(sd.Qty) AS QtyOrder,CONCAT(FName,'  ',LName) AS Customer,
                               DATE(saleorder.DueDate) AS Duedate
-                              ,sd.Price,sd.DocNo
+                              ,sd.Price,sd.DocNo,CASE customer.IsBranch WHEN '1' THEN 'true' ELSE 'false' END AS IsBranch
 
                               from saleorder_detail AS sd
                               LEFT JOIN saleorder on saleorder.DocNo = sd.DocNo
@@ -155,25 +206,26 @@ $dateobj = new DatetimeTH;
 
                                and saleorder.Objective = '1'
 
-                               and item.Item_Code IN ('504010231'
-            																				,'405010225'
+                               and item.Item_Code IN ('0504010231'
+            																				,'0405010225'
             																				,'9900000435'
-            																				,'405010216'
-            																				,'504010245'
+            																				,'0405010216'
+            																				,'0504010245'
             																				,'1105010207'
             																				,'1105010204'
-            																				,'504010235'
-            																				,'504010236'
-            																				,'504010225'
-            																				,'504010227'
-            																				,'504010228'
-            																				,'504010243'
+            																				,'0504010235'
+            																				,'0504010236'
+            																				,'0504010225'
+            																				,'0504010227'
+            																				,'0504010228'
+            																				,'0504010243'
+                                                    ,'0405010216'
             																				)
 															 and item.NameTH = '$tempNameTH' and item.SalePrice = '$tempSalePrice'
 
                                GROUP BY FName,NameTH
 
-                              ORDER BY Customer,NameTH,SalePrice
+                               ORDER BY IsBranch,Customer,NameTH,SalePrice
 
                               ";
                               $meQuery2 = mysql_query($Sql_sub);
@@ -181,7 +233,7 @@ $dateobj = new DatetimeTH;
                                   ?>
                                 <fieldset class="ui-grid-a" style="margin-left:60px; margin-right:15px;">
                                 <div class="ui-block-a" style="font-size:15px; font-weight:normal; width:50%">
-                                  <div align="left">
+                                  <div align="left" <?php if($Result["IsBranch"]=="true"){ ?>style="color:#14a100;" <?php } ?>>
                                     <?=$Result["Customer"]?> &nbsp;&nbsp; จำนวน <?=$Result["QtyOrder"]?>
                                   </div>
                                 </div>

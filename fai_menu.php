@@ -70,6 +70,7 @@ ORDER BY buffer_fac_order.xDt DESC LIMIT 1";
             <li><a style="color:#FE9A2E" href="#" onClick='getDateNow("Customer_2.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ออเดอร์ลูกค้า (สาขา)</a></li>
 
             <li><a style="color:#009900" href="#" onClick='getDateNow("m3_1.php","fai_menu.php","<?=$xDate?>","daily");'><img src="images/mobile_menu.png" class="ui-li-icon">สินค้าประจำวัน</a></li>
+						<li><a style="color:#009900" href="#" onClick='getDateNow("m3_new.php","fai_menu.php","<?=$xDate?>","m3_new");'><img src="images/mobile_menu.png" class="ui-li-icon">สินค้าประจำวัน (beta)</a></li>
             <li><a style="color:#009900" href="#" onClick='getDateNow("m3_2.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">สินค้าประจำวัน (ขนมเบรค)</a></li>
             <li><a style="color:#009900" href="#" onClick='getDateNow("m3_3.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">สินค้าประจำวัน (ขนมชิ้น)</a></li>
             <li><a href="#" onClick='getDateNow("m1_1.php","fai_menu.php","<?=$xDate?>","noproduced1");'><img src="images/mobile_menu.png" class="ui-li-icon">สินค้าที่ไม่ผลิต (บรรจุ 2)</a></li>
@@ -96,6 +97,7 @@ ORDER BY buffer_fac_order.xDt DESC LIMIT 1";
 						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_break.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ใบสรุปขนมเบรค</a></li>
 						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_cupcake.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายงานคัพเค้ก</a></li>
 						<li><a style="color:#cdc11b" href="#" onClick='getDateNow("Summary_softcake.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">รายงานขนมห้องซอฟต์เค้ก</a></li>
+						<li><a style="color:#005571" href="#" onClick='getDateNow("Report_ProdnReceive.php","fai_menu.php","<?=$xDate?>","");'><img src="images/mobile_menu.png" class="ui-li-icon">ยอดผลิตและบันทึกรับประจำวัน</a></li>
 		</ul>
 
 	</div>

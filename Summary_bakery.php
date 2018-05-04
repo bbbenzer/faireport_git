@@ -60,7 +60,12 @@ $dateobj = new DatetimeTH;
         <center>
           วันที่<select name="day" id="day">
             <?php for ($i=1; $i <=31 ; $i++) {
-              echo  '<option value="'.$dateobj->getNumber($i).'">'.$dateobj->getNumber($i).'</option>';
+              if($i==date('d')){
+                $msg = "selected";
+              }else{
+                $msg = "";
+              }
+              echo  '<option value="'.$dateobj->getNumber($i).'" '.$msg.'>'.$dateobj->getNumber($i).'</option>';
             } ?>
           </select>
         </center>
@@ -70,7 +75,12 @@ $dateobj = new DatetimeTH;
             เดือน
             <select name="month" id="month">
               <?php for ($i=1; $i <=12 ; $i++) {
-                echo  '<option value="'.$dateobj->getNumber($i).'">'.$dateobj->getTHmonth(date('F',strtotime('2018-'.$dateobj->getNumber($i).'-01'))).'</option>';
+								if($dateobj->getNumber($i)==date('m')){
+	                $msg = "selected";
+	              }else{
+	                $msg = "";
+	              }
+                echo  '<option value="'.$dateobj->getNumber($i).'" '.$msg.'>'.$dateobj->getTHmonth(date('F',strtotime('2018-'.$dateobj->getNumber($i).'-01'))).'</option>';
               } ?>
             </select>
           </center>
